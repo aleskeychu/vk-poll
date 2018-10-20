@@ -4,7 +4,6 @@ import VK from 'react-vk';
 
 import {combineReducers} from 'redux';
 import {Provider} from 'react-redux';
-import BrowserRouter from 'react-router-dom/BrowserRouter';
 
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
@@ -21,9 +20,7 @@ export default class App extends Component {
             <div>
                 <Provider store={store}>
                     <VK apiId={12345}>
-                        <BrowserRouter>
-                            <TestComponent/>
-                        </BrowserRouter>
+                        <TestComponent/>
                     </VK>
                 </Provider>
             </div>
