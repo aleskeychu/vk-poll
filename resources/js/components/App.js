@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import { combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+
+import { createStore } from 'redux';
+import TestComponent from './TestComponent';
+import * as reducers from '../reducers';
+
+const reducer = combineReducers(reducers);
+const store = createStore(reducer);
+
 export default class App extends Component {
     render() {
         return (
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">Example Component</div>
-
-                            <div className="card-body">
-                                I'm an example component!
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <Provider store={store}>
+                    <TestComponent/>
+                </Provider>
             </div>
         );
     }
