@@ -12,7 +12,7 @@ import TestComponent from './TestComponent';
 import * as reducers from '../reducers';
 
 const reducer = combineReducers(reducers);
-const store = createStore(reducer, null, applyMiddleware(thunk));
+const store = createStore(reducer, {}, applyMiddleware(thunk));
 
 export default class App extends Component {
     render() {

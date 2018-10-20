@@ -37336,7 +37336,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_thunk__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__TestComponent__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducers__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducers___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__reducers__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37359,7 +37358,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var reducer = Object(__WEBPACK_IMPORTED_MODULE_3_redux__["c" /* combineReducers */])(__WEBPACK_IMPORTED_MODULE_7__reducers__);
-var store = Object(__WEBPACK_IMPORTED_MODULE_3_redux__["d" /* createStore */])(reducer, null, Object(__WEBPACK_IMPORTED_MODULE_3_redux__["a" /* applyMiddleware */])(__WEBPACK_IMPORTED_MODULE_5_redux_thunk__["a" /* default */]));
+var store = Object(__WEBPACK_IMPORTED_MODULE_3_redux__["d" /* createStore */])(reducer, {}, Object(__WEBPACK_IMPORTED_MODULE_3_redux__["a" /* applyMiddleware */])(__WEBPACK_IMPORTED_MODULE_5_redux_thunk__["a" /* default */]));
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -60056,9 +60055,30 @@ var TestComponent = function (_Component) {
 
 /***/ }),
 /* 82 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["default"] = testReducer;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_types__ = __webpack_require__(88);
 
 
+var initialState = {};
+
+function testReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_types__["a" /* TEST */]:
+            console.log('init test');
+            return {};
+        default:
+            console.log('default state');
+            return {};
+
+    }
+}
 
 /***/ }),
 /* 83 */
@@ -60071,7 +60091,14 @@ var TestComponent = function (_Component) {
 /* 85 */,
 /* 86 */,
 /* 87 */,
-/* 88 */,
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TEST; });
+var TEST = 'TEST';
+
+/***/ }),
 /* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
