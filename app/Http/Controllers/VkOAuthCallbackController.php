@@ -27,24 +27,27 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
             $result = json_decode($response->getBody());
             $access_token = $result->access_token;
             $expires_in = $result->expires_in;
-            $user_id=$result->user_id;
+            $user_id = $result->user_id;
             $user = User::find($user_id);
             if ($user === null) {
-                $response = $client->request('GET', $this->getUrlForUserInfo($access_token));
-                if ($response->getStatusCode() === 200) {
-                    $result = json_decode($response->getBody());
-                    $user = new User();
-                    $user->first_name = $result->first_name;
-                    $user->second_name = $result->second_name;
-                    $user->domain = $result->domain;
-                    $response = $client->request('GET', $result->photo50);
-                    $user->image50 = $response->getBody()->getContents();
-                    $user->vk_access_token = $access_token;
-                    $user->vk_expires_in = $access_token;
-
-                }
-                // TODO
+                $user = new User();
             }
+            $response = $client->request('GET', $this->getUrlForUserInfo($access_token));
+            if ($response->getStatusCode() === 200) {
+                $result = json_decode($response->getBody());
+                $user->id = $result->id;
+                $user->first_name = $result->first_name;
+                $user->second_name = $result->second_name;
+                $user->domain = $result->domain;
+                $response = $client->request('GET', $result->photo50);
+                $user->image50 = $response->getBody()->getContents();
+                $user->vk_access_token = $access_token;
+                $user->vk_expires_in = $access_token;
+                $user->save();
+                $token = JWTAuth::fromUser($user);
+                return view('welcome')->with('jwt-token', $token);
+            }
+            // TODO
         }
 
     }
@@ -64,7 +67,8 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
         return $url;
     }
 
-    private function getUrlForUserInfo($access_token) {
+    private function getUrlForUserInfo($access_token)
+    {
         $url = "https://api.vk.com/method/users.get?"
             . 'fields=photo50,domain'
             . '&access_token=' . $access_token
