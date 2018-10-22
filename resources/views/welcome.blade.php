@@ -10,7 +10,10 @@
     <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div id="example"></div>
+<div id="main"></div>
+<script type="text/javascript">
+    window.authToken="{{ $jwtToken }}";
+</script>
 <script src="{{asset('js/app.js')}}" ></script>
 </body>
 </html>

@@ -12,7 +12,11 @@ import TestComponent from './TestComponent';
 import * as reducers from '../reducers';
 
 const reducer = combineReducers(reducers);
-const store = createStore(reducer, {}, applyMiddleware(thunk));
+const initialState = {
+    authToken: window.authToken,
+    isAuthenticated: window.authToken !== null
+};
+const store = createStore(reducer, initialState, applyMiddleware(thunk));
 
 export default class App extends Component {
     render() {
@@ -20,7 +24,7 @@ export default class App extends Component {
             <div>
                 <Provider store={store}>
                     <VK apiId={12345}>
-                        <TestComponent/>
+                        <TestComponent />
                     </VK>
                 </Provider>
             </div>
@@ -28,6 +32,6 @@ export default class App extends Component {
     }
 }
 
-if (document.getElementById('example')) {
+if (document.getElementById('main')) {
     ReactDOM.render(<App/>, document.getElementById('example'));
 }

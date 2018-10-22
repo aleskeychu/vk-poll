@@ -14,7 +14,6 @@ export default class TestComponent extends Component {
                 <BrowserRouter>
                     <Switch>
                         <Route exact path='/login' component={LoginComponent}/>
-                        <Route path='/vk_callback' component={VkCallbackComponent}
                         <PrivateRoute exact path='/feed' component={MainComponent}/>
                     </Switch>
                 </BrowserRouter>
