@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import VK from 'react-vk';
 
 import {combineReducers} from 'redux';
 import {Provider} from 'react-redux';
@@ -23,9 +22,7 @@ export default class App extends Component {
         return (
             <div>
                 <Provider store={store}>
-                    <VK apiId={12345}>
                         <TestComponent />
-                    </VK>
                 </Provider>
             </div>
         );
