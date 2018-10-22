@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->string('vk_access_token');
             $table->string('vk_expires_in');
+
+            $table->primary('id');
         });
     }
 
