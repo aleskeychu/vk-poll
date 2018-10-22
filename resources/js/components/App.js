@@ -8,9 +8,8 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 import TestComponent from './TestComponent';
-import * as reducers from '../reducers';
+import reducer from '../reducers';
 
-const reducer = combineReducers(reducers);
 const initialState = {
     authToken: window.authToken,
     isAuthenticated: window.authToken !== null
