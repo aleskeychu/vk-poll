@@ -1,25 +1,29 @@
 import React, {Component} from 'react';
 import Waypoint from 'react-waypoint';
 import PollComponent from './PollComponent';
-import NewPollAdderComponent from './NewPollAdderComponent';
+import NewPollAdderContainer from '../containers/NewPollAdderContainer';
 
 
 
-export default class PollFeedComponent extends Component {
+export default class FeedComponent extends Component {
 
-    _loadMoreItems() {
+    state = {
+        isLoading: false
+    };
+
+    _loadMoreItems = () => {
         this.setState({isLoading: true});
-        this.props.loadMoreItems();
-    }
+        this.props.loadMoreItems(this.props.polls.length); // offset
+    };
 
     _renderNewPollAdder() {
         return (
-            <NewPollAdderComponent/>
+            <NewPollAdderContainer/>
         )
     }
 
     _renderItems() {
-        return this.state.items(function (poll) {
+        return this.props.polls.map(function (poll) {
             return (
                 <PollComponent
                     key={poll.id}

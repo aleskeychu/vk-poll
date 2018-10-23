@@ -9,10 +9,14 @@ import thunk from 'redux-thunk';
 
 import TestComponent from './TestComponent';
 import reducer from '../reducers';
+import {PollCreationStatus} from "../constants/actions_types";
+
+console.log('token ' + window.authToken);
 
 const initialState = {
+    polls: [],
     authToken: window.authToken,
-    isAuthenticated: window.authToken !== null
+    pollCreationStatus: PollCreationStatus.success
 };
 const store = createStore(reducer, initialState, applyMiddleware(thunk));
 
@@ -29,5 +33,5 @@ export default class App extends Component {
 }
 
 if (document.getElementById('main')) {
-    ReactDOM.render(<App/>, document.getElementById('example'));
+    ReactDOM.render(<App/>, document.getElementById('main'));
 }

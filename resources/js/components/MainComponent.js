@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import PollFeedComponent from './PollFeedComponent';
+import FeedContainer from '../containers/FeedContainer';
+import SidebarComponent from './SidebarComponent';
 
 export default class MainComponent extends Component {
     render() {
         return (
             <div>
-                <PollFeedComponent />
-                <PollSidebarComponent />
+                <FeedContainer />
+                <SidebarComponent />
             </div>
         )
     }
