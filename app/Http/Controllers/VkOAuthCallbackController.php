@@ -34,18 +34,21 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
             }
             $response = $client->request('GET', $this->getUrlForUserInfo($access_token));
             if ($response->getStatusCode() === 200) {
-                $result = json_decode($response->getBody());
+                error_log($response->getBody());
+                $result = json_decode($response->getBody())->response[0];
                 $user->id = $result->id;
                 $user->first_name = $result->first_name;
-                $user->second_name = $result->second_name;
+                $user->second_name = $result->last_name;
                 $user->domain = $result->domain;
-                $response = $client->request('GET', $result->photo50);
+                $response = $client->request('GET', $result->photo_50);
                 $user->image50 = $response->getBody()->getContents();
                 $user->vk_access_token = $access_token;
                 $user->vk_expires_in = $access_token;
                 $user->save();
                 $token = JWTAuth::fromUser($user);
-                return view('welcome')->with('jwt-token', $token);
+                session()->put('jwtToken', $token);
+                session()->save();
+                return redirect('/feed')->with('jwtToken', $token);
             }
             // TODO
         }
@@ -70,7 +73,7 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
     private function getUrlForUserInfo($access_token)
     {
         $url = "https://api.vk.com/method/users.get?"
-            . 'fields=photo50,domain'
+            . 'fields=photo_50,domain'
             . '&access_token=' . $access_token
             . '&v=' . $this::API_VERSION;
         return $url;
