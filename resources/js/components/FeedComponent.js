@@ -9,7 +9,7 @@ export default class PollFeedComponent extends Component {
 
     _loadMoreItems() {
         this.setState({isLoading: true});
-        // TODO loading
+        this.props.loadMoreItems();
     }
 
     _renderNewPollAdder() {
