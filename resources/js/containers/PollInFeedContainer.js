@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {Label, Button} from 'react-bootstrap';
-import PollComponent from './PollComponent';
-import PollBeingEditedComponent from './PollBeingEditedComponent';
+import PollComponent from '../components/PollComponent';
+import PollBeingEditedComponent from '../components/PollBeingEditedComponent';
+import {editPoll, deletePoll} from "../actions";
 
-export default class PollInFeedComponent extends Component {
+class PollInFeedContainer extends Component {
 
     state = {
         isBeingEdited: false
@@ -25,6 +26,10 @@ export default class PollInFeedComponent extends Component {
         });
     };
 
+    onDelete = () => {
+      this.props.onDelete(this.props.id);
+    };
+
     render() {
         return this.state.isBeingEdited
             ? (
@@ -38,8 +43,18 @@ export default class PollInFeedComponent extends Component {
                 <PollComponent
                     {...this.props}
                     onEdit={this.onEdit}
+                    onDelete={this.onDelete}
                 />
             )
         ;
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDelete: dispatch(deletePoll),
+        onSubmit: dispatch(editPoll),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(PollInFeedContainer);

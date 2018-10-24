@@ -1,5 +1,6 @@
 import * as type from '../constants/actions_types';
-import {FETCH_POLLS_URL, POST_POLL_URL} from '../constants/api_urls';
+import {FETCH_POLLS_URL, POLL_URL} from '../constants/api_urls';
+import {POLL_STARTED} from "../constants/actions_types";
 
 const axios = require('axios');
 
@@ -68,7 +69,7 @@ export const createPoll = (dispatch) => {
         isAnonymous
     ) => {
         dispatch(pollIsBeingCreated());
-        return axios.post(POST_POLL_URL, {
+        return axios.post(POLL_URL, {
             title,
             options,
             isMultianswer,
@@ -92,12 +93,10 @@ const editPollStarted = (id) => {
     };
 };
 
-const editPollSuccess = (id, title, options) => {
+const editPollSuccess = (poll) => {
     return {
         type: type.EDIT_POLL_SUCCESS,
-        id,
-        title,
-        options
+        poll
     };
 };
 
@@ -115,14 +114,46 @@ export const editPoll = (dispatch) => {
         options
     ) => {
         dispatch(editPollStarted());
-        axios.post(POST_POLL_URL, {
+        axios.post(POLL_URL, {
             id, title, options
         })
             .then(response => {
-                dispatch(editPollSuccess(id, title, options));
+                dispatch(editPollSuccess(response.data));
             })
             .error(error => {
                 dispatch(editPollError(id)); // TODO maybe use error var somehow
             });
     }
+};
+
+const deletePollStarted = () => {
+    return {
+        type: DELETE_POLL_STARTED
+    };
+};
+
+const deletePollSuccess = (id) => {
+    return {
+        type: DELETE_POLL_SUCCESS,
+        id
+    };
+};
+
+const deletePollError = () => {
+    return {
+        type: DELETE_POLL_ERROR
+    };
+};
+
+export const deletePoll = (dispatch) => {
+    return (id) => {
+        dispatch(deletePollStarted());
+        axios.delete(POLL_URL + '/' + id)
+            .then(response => {
+                dispatch(deletePollSuccess(response.data));
+            })
+            .error(error => {
+                dispatch(deletePollError());
+            });
+    };
 };

@@ -5,10 +5,14 @@ export default class PollComponent extends Component {
 
     render() {
         const userHasVoted = this.props.userVotedFor !== -1;
+        // TODO change edit and delete to dropdown
         return (
             <div>
                 {this.props.creatorIsCurrentUser
-                    ? <Button onClick={this.props.onEdit}>edit</Button>
+                    ? (<div>
+                        <Button onClick={this.props.onEdit}>edit</Button>
+                        <Button onClick={this.props.onDelete}>delete</Button>
+                    </div>)
                     : null
                 }
                 <h3><Label>{this.props.title}</Label></h3>

@@ -3,14 +3,13 @@ import update from 'immutability-helper';
 
 export default function pollsReducer(state = {}, action) {
     switch (action.type) {
-        case DELETE_POLL:
-            return state; // TODO
         case REFRESH_POLLS:
             return {
                 ...state,
                 polls: action.polls
             };
         case FETCH_MORE_POLLS:
+            // leave only those polls which are not yet in the state
             const newPolls = action.polls.filter(poll => {
                 return state.polls.find(other => other.id === poll.id) !== undefined
             });
@@ -18,13 +17,19 @@ export default function pollsReducer(state = {}, action) {
                 ...state,
                 polls: state.polls.concat(newPolls)
             };
-        // TODO maybe filter for unique by id
         case EDIT_POLL_SUCCESS:
-            const idx = state.polls.findIndex(elem => elem.id === action.id);
-            const updatedPolls = update(state.polls, {[idx]: {$set: action.poll}});
+            const idxUpdate = state.polls.findIndex(elem => elem.id === action.poll.id);
+            const updatedPolls = update(state.polls, {[idxUpdate]: {$set: action.poll}});
             return {
                 ...state,
                 polls: updatedPolls
+            };
+        case DELETE_POLL:
+            const idxDelete = state.polls.findIndex(elem => elem.id === action.poll.id);
+            const pollsAfterDeletion = update(state.poll, {$unset: [idxDelete]});
+            return {
+                ...state,
+                polls: pollsAfterDeletion
             };
         default:
             return state;

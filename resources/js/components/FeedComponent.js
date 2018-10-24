@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Waypoint from 'react-waypoint';
-import PollInFeedComponent from './PollInFeedComponent';
+import PollInFeedContainer from '../containers/PollInFeedContainer';
 import NewPollAdderContainer from '../containers/NewPollAdderContainer';
 
 
@@ -25,8 +25,9 @@ export default class FeedComponent extends Component {
     _renderItems() {
         return this.props.polls.map(function (poll) {
             return (
-                <PollInFeedComponent
+                <PollInFeedContainer
                     key={poll.id}
+                    id={poll.id}
                     title={poll.title}
                     options={poll.options}
                     isAnonymous={poll.isAnonymous}
