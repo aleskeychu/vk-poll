@@ -14,6 +14,7 @@
 <div id="main"></div>
 <script type="text/javascript">
     window.authToken="{{ session()->get('jwtToken') }}";
+    window.userId="{{session()->get('userId')}}";
 </script>
 <script src="{{asset('js/app.js')}}" ></script>
 </body>
