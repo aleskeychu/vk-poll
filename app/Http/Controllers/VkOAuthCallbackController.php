@@ -43,7 +43,7 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
                 $response = $client->request('GET', $result->photo_50);
                 $user->image50 = $response->getBody()->getContents();
                 $user->vk_access_token = $access_token;
-                $user->vk_expires_in = $access_token;
+                $user->vk_expires_in = $expires_in;
                 $user->save();
                 $token = JWTAuth::fromUser($user);
                 session()->put('jwtToken', $token);
