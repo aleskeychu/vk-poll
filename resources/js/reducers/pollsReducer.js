@@ -1,5 +1,5 @@
-import {DELETE_POLL, FETCH_MORE_POLLS, REFRESH_POLLS} from "../constants/actions_types";
-
+import {DELETE_POLL, FETCH_MORE_POLLS, REFRESH_POLLS, EDIT_POLL_SUCCESS} from "../constants/actions_types";
+import update from 'immutability-helper';
 
 export default function pollsReducer(state = {}, action) {
     switch (action.type) {
@@ -19,6 +19,13 @@ export default function pollsReducer(state = {}, action) {
                 polls: state.polls.concat(newPolls)
             };
         // TODO maybe filter for unique by id
+        case EDIT_POLL_SUCCESS:
+            const idx = state.polls.findIndex(elem => elem.id === action.id);
+            const updatedPolls = update(state.polls, {[idx]: {$set: action.poll}});
+            this.setState({
+                ...state,
+                polls: updatedPolls
+            });
         default:
             return state;
     }

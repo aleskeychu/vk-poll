@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {Label, Button} from 'react-bootstrap';
+import PollComponent from './PollComponent';
+import PollBeingEditedComponent from './PollBeingEditedComponent';
 
-export default class PollComponent extends Component {
+export default class PollInFeedComponent extends Component {
 
     state = {
         isBeingEdited: false
@@ -13,34 +15,31 @@ export default class PollComponent extends Component {
         });
     };
 
-    render() {
-        const userHasVoted = this.props.userVotedFor !== -1;
-        const component = this.state.isBeingEdited
-            ? (
-                <div>
+    onSubmit = () => {
 
-                </div>
+    };
+
+    onCancel = () => {
+        this.setState({
+            isBeingEdited: false
+        });
+    };
+
+    render() {
+        return this.state.isBeingEdited
+            ? (
+                <PollBeingEditedComponent
+                    {...this.props}
+                    onSubmit={this.onSubmit}
+                    onCancel={this.onCancel}
+                />
             )
             : (
-            <div>
-                {this.props.creatorIsCurrentUser
-                    ? <Button onClick={this.onEdit}>edit</Button>
-                    : null
-                }
-                <h3><Label>{this.props.title}</Label></h3>
-                {
-                    this.props.options.map((elem, idx) => {
-                        let poll = userHasVoted
-                            ? (<h4 key={idx}><Label>Label: {elem.text + ' (' + elem.count + ')'} </Label></h4>)
-                            : (<h4 key={idx}><Button>Button: {elem.text + ' (' + elem.count + ')'}</Button></h4>);
-                        if (userHasVoted && idx === this.props.userVotedFor) {
-                            poll = (<div className='votedByUser'>{poll}</div>);
-                        }
-                        return poll;
-                    })
-                }
-            </div>
-        );
-        return
+                <PollComponent
+                    {...this.props}
+                    onEdit={this.onEdit}
+                />
+            )
+        ;
     }
 }

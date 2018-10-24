@@ -10,7 +10,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        polls: state.polls
+        polls: state.polls,
+        userId: state.userId
     };
 };
 

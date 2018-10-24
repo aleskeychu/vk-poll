@@ -21,7 +21,8 @@ const initialState = {
         isAnonymous: false,
         isMultianswer: false,
         userVotedFor: -1,
-        creatorId: 1
+        creatorId: 1,
+        topOptionId: 3,
     }],
     authToken: window.authToken,
     pollCreationStatus: PollCreationStatus.success,

@@ -1,5 +1,5 @@
 import * as type from '../constants/actions_types';
-import {FETCH_POLLS_URL, CREATE_POLL_URL} from '../constants/api_urls';
+import {FETCH_POLLS_URL, POST_POLL_URL} from '../constants/api_urls';
 
 const axios = require('axios');
 
@@ -68,7 +68,7 @@ export const createPoll = (dispatch) => {
         isAnonymous
     ) => {
         dispatch(pollIsBeingCreated());
-        return axios.post(CREATE_POLL_URL, {
+        return axios.post(POST_POLL_URL, {
             title,
             options,
             isMultianswer,
@@ -80,6 +80,49 @@ export const createPoll = (dispatch) => {
             })
             .catch(() => {
                 dispatch(errorCreatingPoll());
+            });
+    }
+};
+
+
+const editPollStarted = (id) => {
+    return {
+        type: type.EDIT_POLL_STARTED,
+        id
+    };
+};
+
+const editPollSuccess = (id, title, options) => {
+    return {
+        type: type.EDIT_POLL_SUCCESS,
+        id,
+        title,
+        options
+    };
+};
+
+const editPollError = (id) => {
+    return {
+        type: type.EDIT_POLL_ERROR,
+        id
+    };
+};
+
+export const editPoll = (dispatch) => {
+    return (
+        id,
+        title,
+        options
+    ) => {
+        dispatch(editPollStarted());
+        axios.post(POST_POLL_URL, {
+            id, title, options
+        })
+            .then(response => {
+                dispatch(editPollSuccess(id, title, options));
+            })
+            .error(error => {
+                dispatch(editPollError(id)); // TODO maybe use error var somehow
             });
     }
 };

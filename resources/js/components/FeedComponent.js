@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Waypoint from 'react-waypoint';
-import PollComponent from './PollComponent';
+import PollInFeedComponent from './PollInFeedComponent';
 import NewPollAdderContainer from '../containers/NewPollAdderContainer';
 
 
@@ -25,13 +25,15 @@ export default class FeedComponent extends Component {
     _renderItems() {
         return this.props.polls.map(function (poll) {
             return (
-                <PollComponent
+                <PollInFeedComponent
                     key={poll.id}
                     title={poll.title}
                     options={poll.options}
                     isAnonymous={poll.isAnonymous}
                     isMultianswer={poll.isMultianswer}
                     userVotedFor={poll.userVotedFor}
+                    totalCount={poll.totalCount}
+                    creatorIsCurrentUser={poll.creatorId === this.props.userId}
                 />
             );
         });

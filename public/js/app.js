@@ -7052,14 +7052,17 @@ var matchPath = function matchPath(pathname) {
 
 "use strict";
 /* unused harmony export TEST */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return REFRESH_POLLS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return FETCH_MORE_POLLS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return REFRESH_POLLS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FETCH_MORE_POLLS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DELETE_POLL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return LOGOUT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return PollCreationStatus; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return POLL_BEING_CREATED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return POLL_SUCCESSFULLY_CREATED; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ERROR_CREATING_POLL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return LOGOUT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return PollCreationStatus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return POLL_BEING_CREATED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return POLL_SUCCESSFULLY_CREATED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return ERROR_CREATING_POLL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return EDIT_POLL_STARTED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return EDIT_POLL_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return EDIT_POLL_ERROR; });
 var TEST = 'TEST';
 
 var REFRESH_POLLS = 'REFRESH_POLLS';
@@ -7077,6 +7080,10 @@ var PollCreationStatus = Object.freeze({
 var POLL_BEING_CREATED = PollCreationStatus.creating;
 var POLL_SUCCESSFULLY_CREATED = PollCreationStatus.success;
 var ERROR_CREATING_POLL = PollCreationStatus.error;
+
+var EDIT_POLL_STARTED = 'EDIT_POLL_STARTED';
+var EDIT_POLL_SUCCESS = 'EDIT_POLL_SUCCESS';
+var EDIT_POLL_ERROR = 'EDIT_POLL_ERROR';
 
 /***/ }),
 /* 66 */
@@ -46722,8 +46729,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_redux_thunk__ = __webpack_require__(208);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TestComponent__ = __webpack_require__(209);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__reducers__ = __webpack_require__(405);
@@ -46748,15 +46755,25 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
 console.log('token ' + window.authToken);
 
 var initialState = {
-    polls: [],
+    polls: [{
+        id: 12345,
+        title: 'Title',
+        totalCount: 15,
+        options: [{ id: 1, text: 'option 1', count: 5 }, { id: 2, text: 'option 2', count: 3 }, { id: 3, text: 'option 3', count: 7 }],
+        isAnonymous: false,
+        isMultianswer: false,
+        userVotedFor: -1,
+        creatorId: 1,
+        topOptionId: 3
+    }],
     authToken: window.authToken,
-    pollCreationStatus: __WEBPACK_IMPORTED_MODULE_7__constants_actions_types__["g" /* PollCreationStatus */].success
+    pollCreationStatus: __WEBPACK_IMPORTED_MODULE_7__constants_actions_types__["j" /* PollCreationStatus */].success,
+    userId: window.userId
 };
-var store = Object(__WEBPACK_IMPORTED_MODULE_2_redux__["d" /* createStore */])(__WEBPACK_IMPORTED_MODULE_6__reducers__["a" /* default */], initialState, Object(__WEBPACK_IMPORTED_MODULE_2_redux__["a" /* applyMiddleware */])(__WEBPACK_IMPORTED_MODULE_4_redux_thunk__["a" /* default */]));
+var store = Object(__WEBPACK_IMPORTED_MODULE_3_redux__["d" /* createStore */])(__WEBPACK_IMPORTED_MODULE_6__reducers__["a" /* default */], initialState, Object(__WEBPACK_IMPORTED_MODULE_3_redux__["a" /* applyMiddleware */])(__WEBPACK_IMPORTED_MODULE_4_redux_thunk__["a" /* default */]));
 
 var App = function (_Component) {
     _inherits(App, _Component);
@@ -46774,7 +46791,7 @@ var App = function (_Component) {
                 'div',
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_3_react_redux__["a" /* Provider */],
+                    __WEBPACK_IMPORTED_MODULE_2_react_redux__["a" /* Provider */],
                     { store: store },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__TestComponent__["a" /* default */], null)
                 )
@@ -78520,7 +78537,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        polls: state.polls
+        polls: state.polls,
+        userId: state.userId
     };
 };
 
@@ -78534,6 +78552,7 @@ var mapStateToProps = function mapStateToProps(state) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchMorePolls; });
 /* unused harmony export refreshPolls */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createPoll; });
+/* unused harmony export editPoll */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_api_urls__ = __webpack_require__(249);
 
@@ -78543,14 +78562,14 @@ var axios = __webpack_require__(159);
 
 var fetchPolls = function fetchPolls(polls) {
     return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["c" /* FETCH_MORE_POLLS */],
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["f" /* FETCH_MORE_POLLS */],
         polls: polls
     };
 };
 
 var fetchMorePolls = function fetchMorePolls(dispatch) {
     return function (offset) {
-        return axios.get(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["b" /* FETCH_POLLS_URL */] + offset).then(function (response) {
+        return axios.get(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["a" /* FETCH_POLLS_URL */] + offset).then(function (response) {
             dispatch(fetchPolls(response.data));
         }).catch(function (error) {
             // TODO DISPATCH ERROR
@@ -78560,14 +78579,14 @@ var fetchMorePolls = function fetchMorePolls(dispatch) {
 
 var refreshPollsAction = function refreshPollsAction(polls) {
     return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["h" /* REFRESH_POLLS */],
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["k" /* REFRESH_POLLS */],
         polls: polls
     };
 };
 
 var refreshPolls = function refreshPolls(dispatch) {
     return function () {
-        return axios.get(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["b" /* FETCH_POLLS_URL */] + 0).then(function (response) {
+        return axios.get(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["a" /* FETCH_POLLS_URL */] + 0).then(function (response) {
             dispatch(refreshPollsAction(response.data));
         }).catch(function (error) {
             // TODO DISPATCH ERROR
@@ -78577,26 +78596,26 @@ var refreshPolls = function refreshPolls(dispatch) {
 
 var errorCreatingPoll = function errorCreatingPoll() {
     return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["b" /* ERROR_CREATING_POLL */]
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["e" /* ERROR_CREATING_POLL */]
     };
 };
 
 var pollIsBeingCreated = function pollIsBeingCreated() {
     return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["e" /* POLL_BEING_CREATED */]
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["h" /* POLL_BEING_CREATED */]
     };
 };
 
 var pollSuccessfullyCreated = function pollSuccessfullyCreated() {
     return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["f" /* POLL_SUCCESSFULLY_CREATED */]
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["i" /* POLL_SUCCESSFULLY_CREATED */]
     };
 };
 
 var createPoll = function createPoll(dispatch) {
     return function (title, options, isMultianswer, isAnonymous) {
         dispatch(pollIsBeingCreated());
-        return axios.post(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["a" /* CREATE_POLL_URL */], {
+        return axios.post(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["b" /* POST_POLL_URL */], {
             title: title,
             options: options,
             isMultianswer: isMultianswer,
@@ -78610,20 +78629,56 @@ var createPoll = function createPoll(dispatch) {
     };
 };
 
+var editPollStarted = function editPollStarted(id) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["c" /* EDIT_POLL_STARTED */],
+        id: id
+    };
+};
+
+var editPollSuccess = function editPollSuccess(id, title, options) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["d" /* EDIT_POLL_SUCCESS */],
+        id: id,
+        title: title,
+        options: options
+    };
+};
+
+var editPollError = function editPollError(id) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["b" /* EDIT_POLL_ERROR */],
+        id: id
+    };
+};
+
+var editPoll = function editPoll(dispatch) {
+    return function (id, title, options) {
+        dispatch(editPollStarted());
+        axios.post(__WEBPACK_IMPORTED_MODULE_1__constants_api_urls__["b" /* POST_POLL_URL */], {
+            id: id, title: title, options: options
+        }).then(function (response) {
+            dispatch(editPollSuccess(id, title, options));
+        }).error(function (error) {
+            dispatch(editPollError(id)); // TODO maybe use error var somehow
+        });
+    };
+};
+
 /***/ }),
 /* 249 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return FETCH_POLLS_URL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CREATE_POLL_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FETCH_POLLS_URL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return POST_POLL_URL; });
 var BASE_URL = 'http://localhost:8000/api/';
 
 // GET
 var FETCH_POLLS_URL = BASE_URL + 'polls?offset=';
 
 // POST
-var CREATE_POLL_URL = BASE_URL + 'poll';
+var POST_POLL_URL = BASE_URL + 'poll';
 
 /***/ }),
 /* 250 */
@@ -78633,7 +78688,7 @@ var CREATE_POLL_URL = BASE_URL + 'poll';
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_waypoint__ = __webpack_require__(251);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PollComponent__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PollInFeedComponent__ = __webpack_require__(415);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__containers_NewPollAdderContainer__ = __webpack_require__(413);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -78679,13 +78734,15 @@ var FeedComponent = function (_Component) {
         key: '_renderItems',
         value: function _renderItems() {
             return this.props.polls.map(function (poll) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__PollComponent__["a" /* default */], {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__PollInFeedComponent__["a" /* default */], {
                     key: poll.id,
                     title: poll.title,
                     options: poll.options,
                     isAnonymous: poll.isAnonymous,
                     isMultianswer: poll.isMultianswer,
-                    userVotedFor: poll.userVotedFor
+                    userVotedFor: poll.userVotedFor,
+                    totalCount: poll.totalCount,
+                    creatorIsCurrentUser: poll.creatorId === this.props.userId
                 });
             });
         }
@@ -79586,6 +79643,7 @@ function addEventListener(target, eventName, listener, options) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__ = __webpack_require__(255);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79593,6 +79651,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -79608,7 +79667,57 @@ var PollComponent = function (_Component) {
     _createClass(PollComponent, [{
         key: 'render',
         value: function render() {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', null);
+            var _this2 = this;
+
+            var userHasVoted = this.props.userVotedFor !== -1;
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                this.props.creatorIsCurrentUser ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                    { onClick: this.props.onEdit },
+                    'edit'
+                ) : null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'h3',
+                    null,
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["f" /* Label */],
+                        null,
+                        this.props.title
+                    )
+                ),
+                this.props.options.map(function (elem, idx) {
+                    var poll = userHasVoted ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        { key: idx },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["f" /* Label */],
+                            null,
+                            'Label: ',
+                            elem.text + ' (' + elem.count + ')',
+                            ' '
+                        )
+                    ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        { key: idx },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                            null,
+                            'Button: ',
+                            elem.text + ' (' + elem.count + ')'
+                        )
+                    );
+                    if (userHasVoted && idx === _this2.props.userVotedFor) {
+                        poll = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'votedByUser' },
+                            poll
+                        );
+                    }
+                    return poll;
+                })
+            );
         }
     }]);
 
@@ -79625,6 +79734,7 @@ var PollComponent = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EditableTitleAndOptionsComponent__ = __webpack_require__(417);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79632,6 +79742,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -79689,11 +79800,17 @@ var NewPollAdderComponent = function (_Component) {
             });
         }, _this.handleOptionChange = function (idx) {
             return function (e) {
-                var options = _this.state.answerOptions;
+                var options = _this.state.answerOptions.slice();
                 options[idx] = e.target.value;
                 if (idx + 1 === _this.state.answerOptions.length && idx + 1 !== 10) {
                     options.push('');
                 }
+                _this.setState({ answerOptions: options });
+            };
+        }, _this.handleDeleteOption = function (idx) {
+            return function () {
+                var options = _this.state.answerOptions.slice();
+                options.splice(idx, 1);
                 _this.setState({ answerOptions: options });
             };
         }, _this.attachMultianswerCheckbox = function (elem) {
@@ -79706,58 +79823,33 @@ var NewPollAdderComponent = function (_Component) {
     _createClass(NewPollAdderComponent, [{
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             var isLoading = this.state.isLoading;
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__EditableTitleAndOptionsComponent__["a" /* default */], {
+                    title: this.state.title,
+                    answerOptions: this.state.answerOptions,
+                    handleTitleChange: this.handleTitleChange,
+                    handleOptionChange: this.handleOptionChange,
+                    handleDeleteOption: this.handleDeleteOption
+                }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["e" /* FormGroup */],
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["b" /* Checkbox */],
+                    { inputRef: this.attachMultianswerCheckbox },
+                    'Choose multiple options'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["b" /* Checkbox */],
+                    { inputRef: this.attachAnonymousRadio },
+                    'Anonymous poll'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
                     {
-                        controlId: 'newPoll'
-                    },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["c" /* ControlLabel */],
-                        null,
-                        'Create new poll'
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["d" /* FormControl */], {
-                        type: 'text',
-                        value: this.state.title,
-                        onChange: this.handleTitleChange
-                    }),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        null,
-                        this.state.answerOptions.map(function (option, idx) {
-                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["d" /* FormControl */], {
-                                key: idx,
-                                type: 'text',
-                                value: _this2.state.answerOptions[idx],
-                                onChange: _this2.handleOptionChange(idx)
-                            });
-                        })
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'div',
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["b" /* Checkbox */],
-                            { inputRef: this.attachMultianswerCheckbox },
-                            'Choose multiple options'
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["b" /* Checkbox */],
-                            { inputRef: this.attachAnonymousRadio },
-                            'Anonymous poll'
-                        )
-                    ),
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
-                        { disabled: isLoading, onClick: isLoading ? null : this.createPost },
-                        'Create'
-                    )
+                        disabled: isLoading,
+                        onClick: isLoading ? null : this.createPost },
+                    ' Create '
                 )
             );
         }
@@ -79830,7 +79922,7 @@ var NewPollAdderComponent = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__Jumbotron__ = __webpack_require__(334);
 /* unused harmony reexport Jumbotron */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__Label__ = __webpack_require__(335);
-/* unused harmony reexport Label */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_28__Label__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__ListGroup__ = __webpack_require__(336);
 /* unused harmony reexport ListGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__ListGroupItem__ = __webpack_require__(132);
@@ -83860,7 +83952,7 @@ function (_React$Component) {
   return Label;
 }(__WEBPACK_IMPORTED_MODULE_5_react___default.a.Component);
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Object(__WEBPACK_IMPORTED_MODULE_6__utils_bootstrapUtils__["a" /* bsClass */])('label', Object(__WEBPACK_IMPORTED_MODULE_6__utils_bootstrapUtils__["c" /* bsStyles */])(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_corejs2_core_js_object_values___default()(__WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["d" /* State */]).concat([__WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["e" /* Style */].DEFAULT, __WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["e" /* Style */].PRIMARY]), __WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["e" /* Style */].DEFAULT, Label)));
+/* harmony default export */ __webpack_exports__["a"] = (Object(__WEBPACK_IMPORTED_MODULE_6__utils_bootstrapUtils__["a" /* bsClass */])('label', Object(__WEBPACK_IMPORTED_MODULE_6__utils_bootstrapUtils__["c" /* bsStyles */])(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_corejs2_core_js_object_values___default()(__WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["d" /* State */]).concat([__WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["e" /* Style */].DEFAULT, __WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["e" /* Style */].PRIMARY]), __WEBPACK_IMPORTED_MODULE_7__utils_StyleConfig__["e" /* Style */].DEFAULT, Label)));
 
 /***/ }),
 /* 336 */
@@ -90517,7 +90609,12 @@ var SidebarComponent = function (_Component) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = pollsReducer;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_immutability_helper__ = __webpack_require__(418);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_immutability_helper___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_immutability_helper__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -90528,11 +90625,11 @@ function pollsReducer() {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["a" /* DELETE_POLL */]:
             return state; // TODO
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["h" /* REFRESH_POLLS */]:
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["k" /* REFRESH_POLLS */]:
             return _extends({}, state, {
                 polls: action.polls
             });
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["c" /* FETCH_MORE_POLLS */]:
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["f" /* FETCH_MORE_POLLS */]:
             var newPolls = action.polls.filter(function (poll) {
                 return state.polls.find(function (other) {
                     return other.id === poll.id;
@@ -90542,6 +90639,14 @@ function pollsReducer() {
                 polls: state.polls.concat(newPolls)
             });
         // TODO maybe filter for unique by id
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["d" /* EDIT_POLL_SUCCESS */]:
+            var idx = state.polls.findIndex(function (elem) {
+                return elem.id === action.id;
+            });
+            var updatedPolls = __WEBPACK_IMPORTED_MODULE_1_immutability_helper___default()(state.polls, _defineProperty({}, idx, { $set: action.poll }));
+            this.setState(_extends({}, state, {
+                polls: updatedPolls
+            }));
         default:
             return state;
     }
@@ -90563,7 +90668,7 @@ function authReducer() {
     var action = arguments[1];
 
     switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["d" /* LOGOUT */]:
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["g" /* LOGOUT */]:
             return _extends({}, state, {
                 authToken: ''
             });
@@ -90624,22 +90729,572 @@ function createPollReducer() {
     var action = arguments[1];
 
     switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["e" /* POLL_BEING_CREATED */]:
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["h" /* POLL_BEING_CREATED */]:
             return _extends({}, state, {
-                pollCreationStatus: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["g" /* PollCreationStatus */].creating
+                pollCreationStatus: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["j" /* PollCreationStatus */].creating
             });
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["f" /* POLL_SUCCESSFULLY_CREATED */]:
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["i" /* POLL_SUCCESSFULLY_CREATED */]:
             return _extends({}, state, {
-                pollCreationStatus: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["g" /* PollCreationStatus */].success
+                pollCreationStatus: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["j" /* PollCreationStatus */].success
             });
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["b" /* ERROR_CREATING_POLL */]:
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["e" /* ERROR_CREATING_POLL */]:
             return _extends({}, state, {
-                pollCreationStatus: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["g" /* PollCreationStatus */].error
+                pollCreationStatus: __WEBPACK_IMPORTED_MODULE_0__constants_actions_types__["j" /* PollCreationStatus */].error
             });
         default:
             return state;
     }
 }
+
+/***/ }),
+/* 415 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PollComponent__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PollBeingEditedComponent__ = __webpack_require__(416);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+var PollInFeedComponent = function (_Component) {
+    _inherits(PollInFeedComponent, _Component);
+
+    function PollInFeedComponent() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, PollInFeedComponent);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = PollInFeedComponent.__proto__ || Object.getPrototypeOf(PollInFeedComponent)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            isBeingEdited: false
+        }, _this.onEdit = function () {
+            _this.setState({
+                isBeingEdited: true
+            });
+        }, _this.onSubmit = function () {}, _this.onCancel = function () {
+            _this.setState({
+                isBeingEdited: false
+            });
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(PollInFeedComponent, [{
+        key: 'render',
+        value: function render() {
+            return this.state.isBeingEdited ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__PollBeingEditedComponent__["a" /* default */], _extends({}, this.props, {
+                onSubmit: this.onSubmit,
+                onCancel: this.onCancel
+            })) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__PollComponent__["a" /* default */], _extends({}, this.props, {
+                onEdit: this.onEdit
+            }));
+        }
+    }]);
+
+    return PollInFeedComponent;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (PollInFeedComponent);
+
+/***/ }),
+/* 416 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__EditableTitleAndOptionsComponent__ = __webpack_require__(417);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var PollBeingEditedComponent = function (_Component) {
+    _inherits(PollBeingEditedComponent, _Component);
+
+    function PollBeingEditedComponent(props) {
+        _classCallCheck(this, PollBeingEditedComponent);
+
+        var _this = _possibleConstructorReturn(this, (PollBeingEditedComponent.__proto__ || Object.getPrototypeOf(PollBeingEditedComponent)).call(this));
+
+        _this.handleTitleChange = function (e) {
+            var emptyTitle = _this.state.emptyTitle === 'error' && e.target.value.trim() === 0 ? 'error' : null;
+            _this.setState({
+                title: e.target.value,
+                emptyTitle: emptyTitle
+            });
+        };
+
+        _this.handleOptionChange = function (idx) {
+            return function (e) {
+                var options = _this.state.answerOptions.slice();
+                options[idx].text = e.target.value;
+                if (idx + 1 === _this.state.answerOptions.length && idx + 1 !== 10) {
+                    options.push({ text: '', id: _this.state.topOptionId + 1, count: 0 });
+                }
+                _this.setState({
+                    options: options,
+                    topOptionId: _this.state.topOptionId + 1
+                });
+            };
+        };
+
+        _this.handleDeleteOption = function (idx) {
+            return function () {
+                var options = _this.state.answerOptions.slice();
+                options.splice(idx, 1);
+                _this.setState({ answerOptions: options });
+            };
+        };
+
+        _this.handleSubmit = function () {
+            if (_this.state.title.trim().length === 0) {
+                _this.setState({ emptyTitle: 'error' });
+                return;
+            }
+            var polls = _this.state.options.filter(function (elem) {
+                return elem.text.trim().length !== 0;
+            });
+            if (polls.length === 0) {
+                _this.setState({ emptyOptions: 'error' });
+                return;
+            }
+
+            _this.editPoll(_this.props.id, _this.state.title, _this.state.options);
+        };
+
+        _this.state = {
+            title: props.title,
+            options: _this.props.options,
+            emptyTitle: false,
+            emptyOption: false,
+            topOptionId: _this.props.topOptionId
+        };
+        return _this;
+    }
+
+    _createClass(PollBeingEditedComponent, [{
+        key: "render",
+        value: function render() {
+            var answerOptions = this.state.options.map(function (elem) {
+                return elem.text;
+            });
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__EditableTitleAndOptionsComponent__["a" /* default */], {
+                    title: this.state.title,
+                    answerOptions: answerOptions,
+                    handleOptionChange: this.handleOptionChange,
+                    handleTitleChange: this.handleTitleChange
+                }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                    { onClick: this.props.onCancel },
+                    "Cancel"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                    { onClick: this.handleSubmit },
+                    "Save"
+                )
+            );
+        }
+    }]);
+
+    return PollBeingEditedComponent;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (PollBeingEditedComponent);
+
+/***/ }),
+/* 417 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__ = __webpack_require__(255);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var EditableTitleAndOptionsComponent = function (_Component) {
+    _inherits(EditableTitleAndOptionsComponent, _Component);
+
+    function EditableTitleAndOptionsComponent() {
+        _classCallCheck(this, EditableTitleAndOptionsComponent);
+
+        return _possibleConstructorReturn(this, (EditableTitleAndOptionsComponent.__proto__ || Object.getPrototypeOf(EditableTitleAndOptionsComponent)).apply(this, arguments));
+    }
+
+    _createClass(EditableTitleAndOptionsComponent, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["e" /* FormGroup */],
+                    {
+                        controlId: 'newPoll'
+                    },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["c" /* ControlLabel */],
+                        null,
+                        'Create new poll'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["d" /* FormControl */], {
+                        type: 'text',
+                        value: this.props.title,
+                        onChange: this.props.handleTitleChange
+                    }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        null,
+                        this.state.answerOptions.map(function (option, idx) {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                null,
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["d" /* FormControl */], {
+                                    key: idx,
+                                    type: 'text',
+                                    value: _this2.props.answerOptions[idx],
+                                    onChange: _this2.props.handleOptionChange(idx)
+                                }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                                    { onClick: _this2.props.handleDeleteOption(idx) },
+                                    'Delete'
+                                )
+                            );
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return EditableTitleAndOptionsComponent;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (EditableTitleAndOptionsComponent);
+
+/***/ }),
+/* 418 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var invariant = __webpack_require__(11);
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var splice = Array.prototype.splice;
+
+var toString = Object.prototype.toString
+var type = function(obj) {
+  return toString.call(obj).slice(8, -1);
+}
+
+var assign = Object.assign || /* istanbul ignore next */ function assign(target, source) {
+  getAllKeys(source).forEach(function(key) {
+    if (hasOwnProperty.call(source, key)) {
+      target[key] = source[key];
+    }
+  });
+  return target;
+};
+
+var getAllKeys = typeof Object.getOwnPropertySymbols === 'function' ?
+  function(obj) { return Object.keys(obj).concat(Object.getOwnPropertySymbols(obj)) } :
+  /* istanbul ignore next */ function(obj) { return Object.keys(obj) };
+
+/* istanbul ignore next */
+function copy(object) {
+  if (Array.isArray(object)) {
+    return assign(object.constructor(object.length), object)
+  } else if (type(object) === 'Map') {
+    return new Map(object)
+  } else if (type(object) === 'Set') {
+    return new Set(object)
+  } else if (object && typeof object === 'object') {
+    var prototype = Object.getPrototypeOf(object);
+    return assign(Object.create(prototype), object);
+  } else {
+    return object;
+  }
+}
+
+function newContext() {
+  var commands = assign({}, defaultCommands);
+  update.extend = function(directive, fn) {
+    commands[directive] = fn;
+  };
+  update.isEquals = function(a, b) { return a === b; };
+
+  return update;
+
+  function update(object, spec) {
+    if (typeof spec === 'function') {
+      spec = { $apply: spec };
+    }
+
+    if (!(Array.isArray(object) && Array.isArray(spec))) {
+      invariant(
+        !Array.isArray(spec),
+        'update(): You provided an invalid spec to update(). The spec may ' +
+        'not contain an array except as the value of $set, $push, $unshift, ' +
+        '$splice or any custom command allowing an array value.'
+      );
+    }
+
+    invariant(
+      typeof spec === 'object' && spec !== null,
+      'update(): You provided an invalid spec to update(). The spec and ' +
+      'every included key path must be plain objects containing one of the ' +
+      'following commands: %s.',
+      Object.keys(commands).join(', ')
+    );
+
+    var nextObject = object;
+    var index, key;
+    getAllKeys(spec).forEach(function(key) {
+      if (hasOwnProperty.call(commands, key)) {
+        var objectWasNextObject = object === nextObject;
+        nextObject = commands[key](spec[key], nextObject, spec, object);
+        if (objectWasNextObject && update.isEquals(nextObject, object)) {
+          nextObject = object;
+        }
+      } else {
+        var nextValueForKey =
+          type(object) === 'Map'
+            ? update(object.get(key), spec[key])
+            : update(object[key], spec[key]);
+        var nextObjectValue =
+          type(nextObject) === 'Map'
+              ? nextObject.get(key)
+              : nextObject[key];
+        if (!update.isEquals(nextValueForKey, nextObjectValue) || typeof nextValueForKey === 'undefined' && !hasOwnProperty.call(object, key)) {
+          if (nextObject === object) {
+            nextObject = copy(object);
+          }
+          if (type(nextObject) === 'Map') {
+            nextObject.set(key, nextValueForKey);
+          } else {
+            nextObject[key] = nextValueForKey;
+          }
+        }
+      }
+    })
+    return nextObject;
+  }
+
+}
+
+var defaultCommands = {
+  $push: function(value, nextObject, spec) {
+    invariantPushAndUnshift(nextObject, spec, '$push');
+    return value.length ? nextObject.concat(value) : nextObject;
+  },
+  $unshift: function(value, nextObject, spec) {
+    invariantPushAndUnshift(nextObject, spec, '$unshift');
+    return value.length ? value.concat(nextObject) : nextObject;
+  },
+  $splice: function(value, nextObject, spec, originalObject) {
+    invariantSplices(nextObject, spec);
+    value.forEach(function(args) {
+      invariantSplice(args);
+      if (nextObject === originalObject && args.length) nextObject = copy(originalObject);
+      splice.apply(nextObject, args);
+    });
+    return nextObject;
+  },
+  $set: function(value, nextObject, spec) {
+    invariantSet(spec);
+    return value;
+  },
+  $toggle: function(targets, nextObject) {
+    invariantSpecArray(targets, '$toggle');
+    var nextObjectCopy = targets.length ? copy(nextObject) : nextObject;
+
+    targets.forEach(function(target) {
+      nextObjectCopy[target] = !nextObject[target];
+    });
+
+    return nextObjectCopy;
+  },
+  $unset: function(value, nextObject, spec, originalObject) {
+    invariantSpecArray(value, '$unset');
+    value.forEach(function(key) {
+      if (Object.hasOwnProperty.call(nextObject, key)) {
+        if (nextObject === originalObject) nextObject = copy(originalObject);
+        delete nextObject[key];
+      }
+    });
+    return nextObject;
+  },
+  $add: function(value, nextObject, spec, originalObject) {
+    invariantMapOrSet(nextObject, '$add');
+    invariantSpecArray(value, '$add');
+    if (type(nextObject) === 'Map') {
+      value.forEach(function(pair) {
+        var key = pair[0];
+        var value = pair[1];
+        if (nextObject === originalObject && nextObject.get(key) !== value) nextObject = copy(originalObject);
+        nextObject.set(key, value);
+      });
+    } else {
+      value.forEach(function(value) {
+        if (nextObject === originalObject && !nextObject.has(value)) nextObject = copy(originalObject);
+        nextObject.add(value);
+      });
+    }
+    return nextObject;
+  },
+  $remove: function(value, nextObject, spec, originalObject) {
+    invariantMapOrSet(nextObject, '$remove');
+    invariantSpecArray(value, '$remove');
+    value.forEach(function(key) {
+      if (nextObject === originalObject && nextObject.has(key)) nextObject = copy(originalObject);
+      nextObject.delete(key);
+    });
+    return nextObject;
+  },
+  $merge: function(value, nextObject, spec, originalObject) {
+    invariantMerge(nextObject, value);
+    getAllKeys(value).forEach(function(key) {
+      if (value[key] !== nextObject[key]) {
+        if (nextObject === originalObject) nextObject = copy(originalObject);
+        nextObject[key] = value[key];
+      }
+    });
+    return nextObject;
+  },
+  $apply: function(value, original) {
+    invariantApply(value);
+    return value(original);
+  }
+};
+
+var contextForExport = newContext();
+
+module.exports = contextForExport;
+module.exports.default = contextForExport;
+module.exports.newContext = newContext;
+
+// invariants
+
+function invariantPushAndUnshift(value, spec, command) {
+  invariant(
+    Array.isArray(value),
+    'update(): expected target of %s to be an array; got %s.',
+    command,
+    value
+  );
+  invariantSpecArray(spec[command], command)
+}
+
+function invariantSpecArray(spec, command) {
+  invariant(
+    Array.isArray(spec),
+    'update(): expected spec of %s to be an array; got %s. ' +
+    'Did you forget to wrap your parameter in an array?',
+    command,
+    spec
+  );
+}
+
+function invariantSplices(value, spec) {
+  invariant(
+    Array.isArray(value),
+    'Expected $splice target to be an array; got %s',
+    value
+  );
+  invariantSplice(spec['$splice']);
+}
+
+function invariantSplice(value) {
+  invariant(
+    Array.isArray(value),
+    'update(): expected spec of $splice to be an array of arrays; got %s. ' +
+    'Did you forget to wrap your parameters in an array?',
+    value
+  );
+}
+
+function invariantApply(fn) {
+  invariant(
+    typeof fn === 'function',
+    'update(): expected spec of $apply to be a function; got %s.',
+    fn
+  );
+}
+
+function invariantSet(spec) {
+  invariant(
+    Object.keys(spec).length === 1,
+    'Cannot have more than one key in an object with $set'
+  );
+}
+
+function invariantMerge(target, specValue) {
+  invariant(
+    specValue && typeof specValue === 'object',
+    'update(): $merge expects a spec of type \'object\'; got %s',
+    specValue
+  );
+  invariant(
+    target && typeof target === 'object',
+    'update(): $merge expects a target of type \'object\'; got %s',
+    target
+  );
+}
+
+function invariantMapOrSet(target, command) {
+  var typeOfTarget = type(target);
+  invariant(
+    typeOfTarget === 'Map' || typeOfTarget === 'Set',
+    'update(): %s expects a target of type Set or Map; got %s',
+    command,
+    typeOfTarget
+  );
+}
+
 
 /***/ })
 /******/ ]);

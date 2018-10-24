@@ -16,3 +16,7 @@ export const PollCreationStatus = Object.freeze({
 export const POLL_BEING_CREATED = PollCreationStatus.creating;
 export const POLL_SUCCESSFULLY_CREATED = PollCreationStatus.success;
 export const ERROR_CREATING_POLL = PollCreationStatus.error;
+
+export const EDIT_POLL_STARTED = 'EDIT_POLL_STARTED';
+export const EDIT_POLL_SUCCESS = 'EDIT_POLL_SUCCESS';
+export const EDIT_POLL_ERROR = 'EDIT_POLL_ERROR';

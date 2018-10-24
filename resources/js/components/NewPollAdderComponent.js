@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FormGroup, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap';
+import EditableTitleAndOptionsComponent from "./EditableTitleAndOptionsComponent";
 
 export default class NewPollAdderComponent extends Component {
 
@@ -54,12 +55,18 @@ export default class NewPollAdderComponent extends Component {
     };
 
     handleOptionChange = (idx) => (e) => {
-        const options = this.state.answerOptions;
+        const options = this.state.answerOptions.slice();
         options[idx] = e.target.value;
         if (idx + 1 === this.state.answerOptions.length && idx + 1 !== 10) {
             options.push('');
         }
         this.setState({answerOptions: options});
+    };
+
+    handleDeleteOption = (idx) => () => {
+        const options = this.state.answerOptions.slice();
+        options.splice(idx, 1);
+        this.setState({answerOptions: options})
     };
 
     attachMultianswerCheckbox = (elem) => {
@@ -74,38 +81,24 @@ export default class NewPollAdderComponent extends Component {
         const isLoading = this.state.isLoading;
         return (
             <div>
-                <FormGroup
-                    controlId='newPoll'
-                >
-                    <ControlLabel>Create new poll</ControlLabel>
-                    <FormControl
-                        type='text'
-                        value={this.state.title}
-                        onChange={this.handleTitleChange}
-                    />
-                    <div>
-                        {this.state.answerOptions.map((option, idx) => {
-                            return (
-                                <FormControl
-                                    key={idx}
-                                    type='text'
-                                    value={this.state.answerOptions[idx]}
-                                    onChange={this.handleOptionChange(idx)}
-                                />
-                            );
-                        })}
-                    </div>
-                    <div>
-                        <Checkbox inputRef={this.attachMultianswerCheckbox}>
-                            Choose multiple options
-                        </Checkbox>
-                        <Checkbox inputRef={this.attachAnonymousRadio}>
-                            Anonymous poll
-                        </Checkbox>
-                    </div>
-                    <Button disabled={isLoading} onClick={isLoading ? null : this.createPost}>Create</Button>
-                </FormGroup>
+                <EditableTitleAndOptionsComponent
+                    title={this.state.title}
+                    answerOptions={this.state.answerOptions}
+                    handleTitleChange={this.handleTitleChange}
+                    handleOptionChange={this.handleOptionChange}
+                    handleDeleteOption={this.handleDeleteOption}
+                />
+                <Checkbox inputRef={this.attachMultianswerCheckbox}>
+                    Choose multiple options
+                </Checkbox>
+                <Checkbox inputRef={this.attachAnonymousRadio}>
+                    Anonymous poll
+                </Checkbox>
+                < Button
+                    disabled={isLoading}
+                    onClick={isLoading ? null : this.createPost}> Create </Button>
             </div>
-        );
+    )
+    ;
     }
-}
+    }
