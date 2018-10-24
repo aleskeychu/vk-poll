@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-import {combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 
 import {createStore, applyMiddleware} from 'redux';
@@ -14,9 +13,19 @@ import {PollCreationStatus} from "../constants/actions_types";
 console.log('token ' + window.authToken);
 
 const initialState = {
-    polls: [],
+    polls: [{
+        id: 12345,
+        title: 'Title',
+        totalCount: 15,
+        options: [{id: 1, text: 'option 1', count: 5}, {id: 2, text: 'option 2', count: 3}, {id: 3, text: 'option 3', count: 7}],
+        isAnonymous: false,
+        isMultianswer: false,
+        userVotedFor: -1,
+        creatorId: 1
+    }],
     authToken: window.authToken,
-    pollCreationStatus: PollCreationStatus.success
+    pollCreationStatus: PollCreationStatus.success,
+    userId: window.userId,
 };
 const store = createStore(reducer, initialState, applyMiddleware(thunk));
 
