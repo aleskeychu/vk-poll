@@ -22,10 +22,10 @@ export default function pollsReducer(state = {}, action) {
         case EDIT_POLL_SUCCESS:
             const idx = state.polls.findIndex(elem => elem.id === action.id);
             const updatedPolls = update(state.polls, {[idx]: {$set: action.poll}});
-            this.setState({
+            return {
                 ...state,
                 polls: updatedPolls
-            });
+            };
         default:
             return state;
     }

@@ -90644,9 +90644,9 @@ function pollsReducer() {
                 return elem.id === action.id;
             });
             var updatedPolls = __WEBPACK_IMPORTED_MODULE_1_immutability_helper___default()(state.polls, _defineProperty({}, idx, { $set: action.poll }));
-            this.setState(_extends({}, state, {
+            return _extends({}, state, {
                 polls: updatedPolls
-            }));
+            });
         default:
             return state;
     }
