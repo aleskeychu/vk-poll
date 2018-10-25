@@ -3,6 +3,7 @@ import {Label, Button} from 'react-bootstrap';
 import PollComponent from '../components/PollComponent';
 import PollBeingEditedComponent from '../components/PollBeingEditedComponent';
 import {editPoll, deletePoll} from "../actions";
+import {connect} from 'react-redux';
 
 class PollInFeedContainer extends Component {
 
