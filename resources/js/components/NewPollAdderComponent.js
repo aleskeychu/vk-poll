@@ -69,13 +69,13 @@ export default class NewPollAdderComponent extends Component {
         this.setState({answerOptions: options})
     };
 
-    attachMultianswerCheckbox = (elem) => {
-        elem.onclick = this.onMultianswerToggle;
-    };
-
-    attachAnonymousRadio = (elem) => {
-        elem.onclick = this.onAnonymousToggle;
-    };
+    // attachMultianswerCheckbox = (elem) => {
+    //     elem.onclick = this.onMultianswerToggle;
+    // };
+    //
+    // attachAnonymousRadio = (elem) => {
+    //     elem.onclick = this.onAnonymousToggle;
+    // };
 
     render() {
         const isLoading = this.state.isLoading;
@@ -88,10 +88,10 @@ export default class NewPollAdderComponent extends Component {
                     handleOptionChange={this.handleOptionChange}
                     handleDeleteOption={this.handleDeleteOption}
                 />
-                <Checkbox inputRef={this.attachMultianswerCheckbox}>
+                <Checkbox onClick={this.onMultianswerToggle}>
                     Choose multiple options
                 </Checkbox>
-                <Checkbox inputRef={this.attachAnonymousRadio}>
+                <Checkbox onClick={this.onAnonymousToggle}>
                     Anonymous poll
                 </Checkbox>
                 < Button

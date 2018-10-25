@@ -16,11 +16,10 @@ export default class EditableTitleAndOptionsComponent extends Component {
                         onChange={this.props.handleTitleChange}
                     />
                     <div>
-                        {this.state.answerOptions.map((option, idx) => {
+                        {this.props.answerOptions.map((option, idx) => {
                             return (
-                                <div>
+                                <div key={idx}>
                                     <FormControl
-                                        key={idx}
                                         type='text'
                                         value={this.props.answerOptions[idx]}
                                         onChange={this.props.handleOptionChange(idx)}
@@ -28,7 +27,7 @@ export default class EditableTitleAndOptionsComponent extends Component {
                                     <Button onClick={this.props.handleDeleteOption(idx)}>Delete</Button>
                                 </div>
                             );
-                        })}
+                        }, this)}
                     </div>
                 </FormGroup>
             </div>

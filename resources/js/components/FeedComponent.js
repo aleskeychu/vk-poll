@@ -37,7 +37,7 @@ export default class FeedComponent extends Component {
                     creatorIsCurrentUser={poll.creatorId === this.props.userId}
                 />
             );
-        });
+        }, this);
     }
 
     _renderWaypoint() {
