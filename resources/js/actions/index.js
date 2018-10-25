@@ -4,6 +4,12 @@ import {POLL_STARTED} from "../constants/actions_types";
 
 const axios = require('axios');
 
+const authHeaderHelper = () => {
+    return {
+        headers: {'Authorization': 'Bearer ' + window.localStorage.getItem('jwtToken')}
+    };
+};
+
 const fetchPolls = (polls) => {
     return {
         type: type.FETCH_MORE_POLLS,
@@ -13,7 +19,8 @@ const fetchPolls = (polls) => {
 
 export const fetchMorePolls = (dispatch) => {
     return (offset) => {
-        return axios.get(FETCH_POLLS_URL + offset)
+        return axios.get(FETCH_POLLS_URL + offset,
+            authHeaderHelper())
             .then(response => {
                 dispatch(fetchPolls(response.data))
             })
@@ -32,7 +39,7 @@ const refreshPollsAction = (polls) => {
 
 export const refreshPolls = (dispatch) => {
     return () => {
-        return axios.get(FETCH_POLLS_URL + 0)
+        return axios.get(FETCH_POLLS_URL + '0', authHeaderHelper())
             .then(response => {
                 dispatch(refreshPollsAction(response.data));
             })
@@ -74,7 +81,7 @@ export const createPoll = (dispatch) => {
             options,
             isMultianswer,
             isAnonymous
-        })
+        }, authHeaderHelper())
             .then(() => {
                 dispatch(pollSuccessfullyCreated());
                 refreshPolls(dispatch)(); // refresh
@@ -114,9 +121,9 @@ export const editPoll = (dispatch) => {
         options
     ) => {
         dispatch(editPollStarted());
-        axios.post(POLL_URL, {
-            id, title, options
-        })
+        axios.post(POLL_URL + '/' + id, {
+            title, options
+        }, authHeaderHelper())
             .then(response => {
                 dispatch(editPollSuccess(response.data));
             })
@@ -148,7 +155,7 @@ const deletePollError = () => {
 export const deletePoll = (dispatch) => {
     return (id) => {
         dispatch(deletePollStarted());
-        axios.delete(POLL_URL + '/' + id)
+        axios.delete(POLL_URL + '/' + id, authHeaderHelper())
             .then(response => {
                 dispatch(deletePollSuccess(response.data));
             })
