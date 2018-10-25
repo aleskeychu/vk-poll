@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use \App\Http\Controllers\PollController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('poll', PollController::class);
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::resource('poll', 'PollController');
+});

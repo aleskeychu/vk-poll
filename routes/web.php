@@ -14,6 +14,5 @@
 Route::get('vkcallback', 'VKOAuthCallbackController@index');
 
 Route::get( '/{path?}', function(){
-    error_log('token: ' . session()->get('jwtToken'));
     return view('welcome');
 } )->where('path', '.*')->name('main');
