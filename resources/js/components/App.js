@@ -10,7 +10,8 @@ import TestComponent from './TestComponent';
 import reducer from '../reducers';
 import {PollCreationStatus} from "../constants/actions_types";
 
-console.log('token ' + window.authToken);
+
+const jwtToken = window.localStorage.getItem('jwtToken');
 
 const initialState = {
     polls: [{
@@ -24,7 +25,7 @@ const initialState = {
         creatorId: 1,
         topOptionId: 3,
     }],
-    authToken: window.authToken,
+    isAuthenticated: jwtToken !== '',
     pollCreationStatus: PollCreationStatus.success,
     userId: window.userId,
 };
