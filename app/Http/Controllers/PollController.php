@@ -10,7 +10,6 @@ namespace App\Http\Controllers;
 
 
 use App\Poll;
-use App\Vote;
 use App\Option;
 use Illuminate\Http\Request;
 use Auth;
@@ -32,27 +31,28 @@ class PollController extends Controller
             'isMultianswer' => 'required|boolean',
             'isAnonymous' => 'required|boolean',
         ]);
+        error_log(print_r($data, true));
         $userId = Auth::user()->id;
         $poll = new Poll([
-            'title' => $data->title,
-            'is_multianswer' => $data->isMultianswer,
-            'is_anonymous' => $data->isAnonymous,
+            'title' => $data['title'],
+            'is_multianswer' => $data['isMultianswer'],
+            'is_anonymous' => $data['isAnonymous'],
             'user_id' => $userId
         ]);
         $options = array_map(function ($text, $idx) {
-            $option = new Option([
+            return new Option([
                 'index' => $idx,
                 'text' => $text,
             ]);
         },
-            $data->options,
-            array_keys($data->options)
+            $data['options'],
+            array_keys($data['options'])
         );
         DB::transaction(function () use ($poll, $options) {
             $poll->save();
             array_map(function ($option) use ($poll) {
                 $option->poll_id = $poll->id;
-                $option->save;
+                $option->save();
             },
                 $options
             );
