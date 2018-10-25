@@ -13,7 +13,10 @@
 <body>
 <div id="main"></div>
 <script type="text/javascript">
-    window.authToken="{{ session()->get('jwtToken') }}";
+    const token = '{{session()->has('jwtToken') ? session()->get('jwtToken') : ''}}';
+    if (token !== '') {
+        window.localStorage.setItem('jwtToken', token);
+    }
     window.userId="{{session()->get('userId')}}";
 </script>
 <script src="{{asset('js/app.js')}}" ></script>
