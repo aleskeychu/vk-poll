@@ -18,6 +18,7 @@ class CreatePollsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->boolean('is_anonymous');
             $table->boolean('is_multianswer');
+            $table->string('title');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

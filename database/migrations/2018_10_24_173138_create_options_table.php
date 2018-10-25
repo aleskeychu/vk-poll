@@ -17,6 +17,7 @@ class CreateOptionsTable extends Migration
             $table->unsignedInteger('index');
             $table->unsignedInteger('poll_id');
             $table->string('text');
+            $table->timestamps();
 
             $table->primary(['index', 'poll_id']);
             $table->foreign('poll_id')->references('id')->on('polls');
