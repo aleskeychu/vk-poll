@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import polls from './pollsReducer';
-import authToken from './authReducer';
+import isAuthenticated from './authReducer';
 import pollCreationStatus from './createPollReducer';
+import userId from './userReducer';
 
 export default combineReducers({
     polls,
-    authToken,
-    pollCreationStatus
+    isAuthenticated,
+    pollCreationStatus,
+    userId
 });
