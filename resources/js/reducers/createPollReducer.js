@@ -8,20 +8,11 @@ import {
 export default function createPollReducer(state = {}, action) {
     switch (action.type) {
         case POLL_BEING_CREATED:
-            return {
-                ...state,
-                pollCreationStatus: PollCreationStatus.creating
-            };
+            return PollCreationStatus.creating;
         case POLL_SUCCESSFULLY_CREATED:
-            return {
-                ...state,
-                pollCreationStatus: PollCreationStatus.success
-            };
+            return PollCreationStatus.success;
         case ERROR_CREATING_POLL:
-            return {
-                ...state,
-                pollCreationStatus: PollCreationStatus.error
-            };
+            return PollCreationStatus.error;
         default:
             return state;
     }
