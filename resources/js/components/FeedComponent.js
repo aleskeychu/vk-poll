@@ -13,7 +13,8 @@ export default class FeedComponent extends Component {
 
     _loadMoreItems = () => {
         this.setState({isLoading: true});
-        this.props.loadMoreItems(this.props.polls.length); // offset
+        const idx = this.props.polls.length === 0 ? null : this.props.polls[this.props.polls.length - 1].id;
+        this.props.loadMoreItems(idx); // id of last poll in the feed
     };
 
     _renderNewPollAdder() {
@@ -34,7 +35,7 @@ export default class FeedComponent extends Component {
                     isMultianswer={poll.isMultianswer}
                     userVotedFor={poll.userVotedFor}
                     totalCount={poll.totalCount}
-                    creatorIsCurrentUser={poll.creatorId === this.props.userId}
+                    creatorIsCurrentUser={poll.user_id === this.props.userId}
                 />
             );
         }, this);
