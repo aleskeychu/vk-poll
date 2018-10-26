@@ -40,8 +40,7 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
                 $user->first_name = $result->first_name;
                 $user->second_name = $result->last_name;
                 $user->domain = $result->domain;
-                $response = $client->request('GET', $result->photo_50);
-                $user->image50 = $response->getBody()->getContents();
+                $user->image_50 = $result->photo_50;
                 $user->vk_access_token = $access_token;
                 $user->vk_expires_in = $expires_in;
                 $user->save();

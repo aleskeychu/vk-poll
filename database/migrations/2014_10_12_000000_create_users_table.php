@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('second_name');
             $table->string('domain');
-            $table->binary('image50');
+            $table->string('image_50');
             $table->rememberToken();
             $table->timestamps();
             $table->string('vk_access_token');
