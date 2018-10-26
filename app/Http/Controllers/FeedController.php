@@ -15,15 +15,12 @@ class FeedController extends Controller
         ]);
         $amount = $data['amount'] ?? 20;
         if (!isset($data['poll_id'])) {
-            $polls = Poll::orderBy('created_at', 'desc')->take($amount)->get();
+            $polls = Poll::orderBy('created_at', 'desc')->take($amount)->with('options')->get();
         } else {
             $mark = Poll::find($data['poll_id']);
-            $polls = Poll::where('created_at', '<', $mark->created_at)->order_by('created_at', 'desc')->take($amount)->get();
+            $polls = Poll::where('created_at', '<', $mark->created_at)->order_by('created_at', 'desc')
+                ->take($amount)->with('options')->get();
         }
-
-        $poll_ids = array_map(function ($poll) {
-            return $poll->id;
-        }, $polls);
 
         return response()->json($polls);
     }
