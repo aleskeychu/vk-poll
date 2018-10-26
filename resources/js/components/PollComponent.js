@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Label} from "react-bootstrap";
+import {Button, Label, Row} from "react-bootstrap";
 
 export default class PollComponent extends Component {
 
@@ -7,7 +7,8 @@ export default class PollComponent extends Component {
         const userHasVoted = this.props.userVotedFor !== -1;
         // TODO change edit and delete to dropdown
         return (
-            <div>
+            <div><Row>
+                {/*<UserComponent user={this.props.user} />*/}
                 {this.props.creatorIsCurrentUser
                     ? (<div>
                         <Button onClick={this.props.onEdit}>edit</Button>
@@ -15,12 +16,14 @@ export default class PollComponent extends Component {
                     </div>)
                     : null
                 }
-                <h3><Label>{this.props.title}</Label></h3>
+                </Row>
+
+                <Row><h3><Label>{this.props.title}</Label></h3></Row>
                 {
                     this.props.options.map((elem, idx) => {
                         let poll = userHasVoted
-                            ? (<h4 key={idx}><Label>Label: {elem.text + ' (' + elem.count + ')'} </Label></h4>)
-                            : (<h4 key={idx}><Button>Button: {elem.text + ' (' + elem.count + ')'}</Button></h4>);
+                            ? (<Row key={idx}><h4 ><Label>Label: {elem.text + ' (' + elem.count + ')'} </Label></h4></Row>)
+                            : (<Row key={idx}><h4 ><Button>Button: {elem.text + ' (' + elem.count + ')'}</Button></h4></Row>);
                         if (userHasVoted && idx === this.props.userVotedFor) {
                             poll = (<div className='votedByUser'>{poll}</div>);
                         }
