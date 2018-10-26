@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Label, Button} from 'react-bootstrap';
+import {Grid} from 'react-bootstrap';
 import PollComponent from '../components/PollComponent';
 import PollBeingEditedComponent from '../components/PollBeingEditedComponent';
 import {editPoll, deletePoll} from "../actions";
@@ -28,26 +28,29 @@ class PollInFeedContainer extends Component {
     };
 
     onDelete = () => {
-      this.props.onDelete(this.props.id);
+        this.props.onDelete(this.props.id);
     };
 
     render() {
         return this.state.isBeingEdited
-            ? (
-                <PollBeingEditedComponent
-                    {...this.props}
-                    onSubmit={this.onSubmit}
-                    onCancel={this.onCancel}
-                />
+            ? (<Grid>
+                    <PollBeingEditedComponent
+                        {...this.props}
+                        onSubmit={this.onSubmit}
+                        onCancel={this.onCancel}
+                    />
+                </Grid>
             )
             : (
-                <PollComponent
-                    {...this.props}
-                    onEdit={this.onEdit}
-                    onDelete={this.onDelete}
-                />
+                <Grid>
+                    <PollComponent
+                        {...this.props}
+                        onEdit={this.onEdit}
+                        onDelete={this.onDelete}
+                    />
+                </Grid>
             )
-        ;
+            ;
     }
 }
 
