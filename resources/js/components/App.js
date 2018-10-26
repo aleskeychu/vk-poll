@@ -14,17 +14,16 @@ import {PollCreationStatus} from "../constants/actions_types";
 const jwtToken = window.localStorage.getItem('jwtToken');
 
 const initialState = {
-    polls: [{
-        id: 12345,
-        title: 'Title',
-        totalCount: 15,
-        options: [{id: 1, text: 'option 1', count: 5}, {id: 2, text: 'option 2', count: 3}, {id: 3, text: 'option 3', count: 7}],
-        isAnonymous: false,
-        isMultianswer: false,
-        userVotedFor: -1,
-        creatorId: 1,
-        topOptionId: 3,
-    }],
+    polls: [
+        // id: 12345,
+        // title: 'Title',
+        // options: [{id: 1, text: 'option 1', count: 5}, {id: 2, text: 'option 2', count: 3}, {id: 3, text: 'option 3', count: 7}],
+        // isAnonymous: false,
+        // isMultianswer: false,
+        // userVotedFor: -1,
+        // user_id: 1,
+        // topOptionId: 3, // for option order
+    ],
     isAuthenticated: jwtToken !== '',
     pollCreationStatus: PollCreationStatus.success,
     userId: window.userId,
