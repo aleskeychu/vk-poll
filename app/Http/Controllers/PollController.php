@@ -20,7 +20,7 @@ class PollController extends Controller
 
     /*
      * If $request contains isMultianswer and isAnonymous fields, then its creation
-     * If $request contains id field, then its an update
+     * If $request contains id field, then its an update TODO change to a different rest method
      *
      */
     public function store(Request $request)
