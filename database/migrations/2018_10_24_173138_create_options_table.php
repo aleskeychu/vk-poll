@@ -17,6 +17,7 @@ class CreateOptionsTable extends Migration
             $table->unsignedInteger('index');
             $table->unsignedInteger('poll_id');
             $table->string('text');
+            $table->unsignedInteger('vote_count')->default(0);
             $table->timestamps();
 
             $table->primary(['index', 'poll_id']);
