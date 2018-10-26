@@ -18,8 +18,9 @@ const fetchPolls = (polls) => {
 };
 
 export const fetchMorePolls = (dispatch) => {
-    return (offset) => {
-        return axios.get(FETCH_POLLS_URL + offset,
+    return (poll_id) => {
+        const url = poll_id !== null ? FETCH_POLLS_URL : FETCH_POLLS_URL + 'poll_id=' + poll_id;
+        return axios.get(url,
             authHeaderHelper())
             .then(response => {
                 dispatch(fetchPolls(response.data))
@@ -39,7 +40,7 @@ const refreshPollsAction = (polls) => {
 
 export const refreshPolls = (dispatch) => {
     return () => {
-        return axios.get(FETCH_POLLS_URL + '0', authHeaderHelper())
+        return axios.get(FETCH_POLLS_URL, authHeaderHelper())
             .then(response => {
                 dispatch(refreshPollsAction(response.data));
             })
