@@ -19,7 +19,7 @@ const fetchPolls = (polls) => {
 
 export const fetchMorePolls = (dispatch) => {
     return (poll_id) => {
-        const url = poll_id !== null ? FETCH_POLLS_URL : FETCH_POLLS_URL + 'poll_id=' + poll_id;
+        const url = poll_id === null ? FETCH_POLLS_URL : FETCH_POLLS_URL + 'poll_id=' + poll_id;
         return axios.get(url,
             authHeaderHelper())
             .then(response => {
@@ -51,9 +51,10 @@ export const refreshPolls = (dispatch) => {
 };
 
 
-const errorCreatingPoll = () => {
+const errorCreatingPoll = (error) => {
     return {
         type: type.ERROR_CREATING_POLL,
+        error: error.response.data.error
     };
 };
 
@@ -87,8 +88,8 @@ export const createPoll = (dispatch) => {
                 dispatch(pollSuccessfullyCreated());
                 refreshPolls(dispatch)(); // refresh
             })
-            .catch(() => {
-                dispatch(errorCreatingPoll());
+            .catch((error) => {
+                dispatch(errorCreatingPoll(error));
             });
     }
 };
