@@ -1,4 +1,5 @@
-import {DELETE_POLL_ERROR, ERROR_CREATING_POLL, LOGOUT} from '../constants/actions_types';
+import {DELETE_POLL_ERROR, ERROR_CREATING_POLL, LOGOUT, EDIT_POLL_ERROR} from '../constants/actions_types';
+import {USER_NOT_FOUND} from "../constants/errors";
 
 export default function authReducer(state = {}, action) {
     switch (action.type) {
