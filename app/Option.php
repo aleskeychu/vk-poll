@@ -8,7 +8,7 @@ class Option extends Model
 {
     protected $fillable = ['index', 'text'];
 
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['created_at', 'updated_at', 'poll_id'];
 
     public function votes() {
         return $this->hasMany('App\Vote');
