@@ -12,6 +12,7 @@ import {PollCreationStatus} from "../constants/actions_types";
 
 
 const jwtToken = window.localStorage.getItem('jwtToken');
+const userId = window.localStorage.getItem('userId');
 
 const initialState = {
     polls: [
@@ -24,9 +25,11 @@ const initialState = {
         // user_id: 1,
         // topOptionId: 3, // for option order
     ],
-    isAuthenticated: jwtToken !== '',
     pollCreationStatus: PollCreationStatus.success,
-    userId: window.userId,
+    user: {
+        isAuthenticated: jwtToken !== '',
+        id: parseInt(userId, 10)
+    }
 };
 const store = createStore(reducer, initialState, applyMiddleware(thunk));
 
