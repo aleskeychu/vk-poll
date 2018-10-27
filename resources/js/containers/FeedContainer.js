@@ -11,7 +11,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
     return {
         polls: state.polls,
-        userId: state.userId
+        currentUserId: state.user.id
     };
 };
 
