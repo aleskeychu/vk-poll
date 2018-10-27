@@ -65,8 +65,14 @@ class PollController extends Controller
 
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-
+        $user_id = Auth::user()->id;
+        $poll = Poll::find($id);
+        if ($poll->user_id != $user_id) {
+            return response()->json(['error' => 'user did not create this poll'], 403);
+        }
+        $poll->delete();
+        return response()->json(['poll_id' => $poll->id]);
     }
 }
