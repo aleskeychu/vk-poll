@@ -16,8 +16,9 @@
     const token = '{{session()->has('jwtToken') ? session()->get('jwtToken') : ''}}';
     if (token !== '') {
         window.localStorage.setItem('jwtToken', token);
+        const userId = '{{session()->get('userId')}}';
+        window.localStorage.setItem('userId', userId);
     }
-    window.userId="{{session()->get('userId')}}";
 </script>
 <script src="{{asset('js/app.js')}}" ></script>
 </body>
