@@ -1,6 +1,5 @@
 import * as type from '../constants/actions_types';
-import {FETCH_POLLS_URL, POLL_URL} from '../constants/api_urls';
-import {POLL_STARTED} from "../constants/actions_types";
+import {FETCH_POLLS_URL, POLL_URL, VOTE_URL} from '../constants/api_urls';
 
 const axios = require('axios');
 
@@ -17,6 +16,13 @@ const fetchPolls = (polls) => {
     };
 };
 
+const errorFetchingPolls = (error) => {
+    return {
+        type: type.ERROR_FETCHONG_POLLS,
+        error: error.response.data.error
+    };
+};
+
 export const fetchMorePolls = (dispatch) => {
     return (poll_id) => {
         const url = poll_id === null ? FETCH_POLLS_URL : FETCH_POLLS_URL + 'poll_id=' + poll_id;
@@ -26,7 +32,7 @@ export const fetchMorePolls = (dispatch) => {
                 dispatch(fetchPolls(response.data))
             })
             .catch(error => {
-                // TODO DISPATCH ERROR
+                dispatch(errorFetchingPolls(error));
             });
     };
 };
@@ -45,7 +51,7 @@ export const refreshPolls = (dispatch) => {
                 dispatch(refreshPollsAction(response.data));
             })
             .catch(error => {
-                // TODO DISPATCH ERROR
+                dispatch(errorFetchingPolls(error));
             })
     };
 };
@@ -137,20 +143,20 @@ export const editPoll = (dispatch) => {
 
 const deletePollStarted = () => {
     return {
-        type: DELETE_POLL_STARTED
+        type: type.DELETE_POLL_STARTED
     };
 };
 
 const deletePollSuccess = (id) => {
     return {
-        type: DELETE_POLL_SUCCESS,
+        type: type.DELETE_POLL_SUCCESS,
         id
     };
 };
 
 const deletePollError = () => {
     return {
-        type: DELETE_POLL_ERROR
+        type: type.DELETE_POLL_ERROR
     };
 };
 
@@ -159,10 +165,44 @@ export const deletePoll = (dispatch) => {
         dispatch(deletePollStarted());
         axios.delete(POLL_URL + '/' + id, authHeaderHelper())
             .then(response => {
-                dispatch(deletePollSuccess(response.data));
+                dispatch(deletePollSuccess(response.data.poll_id));
             })
-            .error(error => {
-                dispatch(deletePollError());
+            .catch(error => {
+                dispatch(deletePollError()); // TODO
             });
     };
+};
+
+const voted = (poll_id, option_id, user_id) => {
+    return {
+        type: type.VOTED,
+        poll_id,
+        option_id,
+        user_id
+    };
+};
+
+const voted_error = (poll_id, option_id) => {
+    return {
+        type: type.VOTED_ERROR,
+        poll_id,
+        option_id
+    };
+};
+
+export const vote = (dispatch) => {
+    return (poll_id, option_id, user_id) => {
+        // TODO maybe dispatch started ?
+        axios.post(VOTE_URL, {
+            poll_id, option_id
+        }, authHeaderHelper())
+            .then(() => {
+                dispatch(voted(poll_id, option_id, user_id))
+            })
+            .catch(error => {
+                // TODO write reducer for it
+                // TODO handle case when option has been deleted
+                dispatch(voted_error(poll_id, option_id));
+            });
+    }
 };
