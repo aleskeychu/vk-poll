@@ -1,4 +1,4 @@
-import {DELETE_POLL, FETCH_MORE_POLLS, REFRESH_POLLS, EDIT_POLL_SUCCESS, VOTED, DELETE_POLL_SUCCESS} from "../constants/actions_types";
+import {FETCH_MORE_POLLS, REFRESH_POLLS, EDIT_POLL_SUCCESS, VOTED, DELETE_POLL_SUCCESS} from "../constants/actions_types";
 import update from 'immutability-helper';
 
 export default function pollsReducer(state = {}, action) {
