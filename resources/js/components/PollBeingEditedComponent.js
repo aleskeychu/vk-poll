@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Checkbox, ControlLabel, FormControl, FormGroup} from "react-bootstrap";
 import EditableTitleAndOptionsComponent from "./EditableTitleAndOptionsComponent";
+import PropTypes from 'prop-types';
+import {pollType} from "../types";
 
 export default class PollBeingEditedComponent extends Component {
 
@@ -77,3 +79,9 @@ export default class PollBeingEditedComponent extends Component {
         )
     }
 }
+
+PollBeingEditedComponent.propTypes = {
+    ...pollType,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func
+};
