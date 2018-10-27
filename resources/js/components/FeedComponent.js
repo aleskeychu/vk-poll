@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import Waypoint from 'react-waypoint';
 import PollInFeedContainer from '../containers/PollInFeedContainer';
 import NewPollAdderContainer from '../containers/NewPollAdderContainer';
-
-
+import PropTypes from 'prop-types';
+import {pollType} from '../types';
 
 export default class FeedComponent extends Component {
 
@@ -28,14 +28,7 @@ export default class FeedComponent extends Component {
             return (
                 <PollInFeedContainer
                     key={poll.id}
-                    id={poll.id}
-                    title={poll.title}
-                    options={poll.options}
-                    isAnonymous={poll.isAnonymous}
-                    isMultianswer={poll.isMultianswer}
-                    userVotedFor={poll.userVotedFor}
-                    totalCount={poll.totalCount}
-                    creatorIsCurrentUser={poll.user_id === this.props.userId}
+                    poll={poll}
                 />
             );
         }, this);
@@ -65,3 +58,9 @@ export default class FeedComponent extends Component {
         )
     }
 }
+
+FeedComponent.propTypes = {
+    polls: PropTypes.arrayOf(PropTypes.shape(pollType)),
+    currentUserId: PropTypes.number,
+    loadMoreItems: PropTypes.func
+};
