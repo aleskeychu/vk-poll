@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ControlLabel, FormControl, FormGroup, Button} from "react-bootstrap";
+import PropTypes from 'prop-types';
 
 export default class EditableTitleAndOptionsComponent extends Component {
 
@@ -35,3 +36,10 @@ export default class EditableTitleAndOptionsComponent extends Component {
     }
 }
 
+EditableTitleAndOptionsComponent.propTypes = {
+    title: PropTypes.string,
+    handleTitleChange: PropTypes.func,
+    answerOptions: PropTypes.arrayOf(PropTypes.string),
+    handleOptionChange: PropTypes.func,
+    handleDeleteOption: PropTypes.func
+};
