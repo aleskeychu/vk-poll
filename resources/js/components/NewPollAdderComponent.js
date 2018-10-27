@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {FormGroup, ControlLabel, FormControl, Checkbox, Button} from 'react-bootstrap';
+import {Checkbox, Button} from 'react-bootstrap';
 import EditableTitleAndOptionsComponent from "./EditableTitleAndOptionsComponent";
+import PropTypes from 'prop-types';
+import {PollCreationStatus} from "../constants/actions_types";
 
 export default class NewPollAdderComponent extends Component {
 
@@ -69,14 +71,6 @@ export default class NewPollAdderComponent extends Component {
         this.setState({answerOptions: options})
     };
 
-    // attachMultianswerCheckbox = (elem) => {
-    //     elem.onclick = this.onMultianswerToggle;
-    // };
-    //
-    // attachAnonymousRadio = (elem) => {
-    //     elem.onclick = this.onAnonymousToggle;
-    // };
-
     render() {
         const isLoading = this.state.isLoading;
         return (
@@ -98,7 +92,15 @@ export default class NewPollAdderComponent extends Component {
                     disabled={isLoading}
                     onClick={isLoading ? null : this.createPost}> Create </Button>
             </div>
-    )
-    ;
+        );
     }
-    }
+}
+
+NewPollAdderComponent.propTypes = {
+    createPoll: PropTypes.func,
+    creationStatus: PropTypes.oneOf([
+        PollCreationStatus.error,
+        PollCreationStatus.creating,
+        PollCreationStatus.success
+    ])
+};
