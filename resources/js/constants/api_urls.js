@@ -5,3 +5,4 @@ export const FETCH_POLLS_URL = BASE_URL + 'polls?';
 
 // POST
 export const POLL_URL = BASE_URL + 'poll';
+export const VOTE_URL = BASE_URL + 'vote';
