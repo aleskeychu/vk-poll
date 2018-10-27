@@ -17,9 +17,10 @@ class CreateVotesTable extends Migration
             $table->unsignedInteger('poll_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('vote_id');
+            $table->timestamps();
 
-            $table->foreign('poll_id')->references('id')->on('polls');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
