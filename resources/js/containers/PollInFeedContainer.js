@@ -8,6 +8,9 @@ import PropTypes from 'prop-types';
 import {pollType} from "../types";
 import update from 'immutability-helper';
 
+import card from '../styles/card.css';
+import aligner from '../styles/aligner.css';
+
 class PollInFeedContainer extends Component {
 
     state = {
@@ -60,7 +63,7 @@ class PollInFeedContainer extends Component {
 
     render() {
         const onVote = this.props.poll.is_multianswer ? this.onVoteMulti : this.onVoteSingle;
-        return this.state.isBeingEdited
+        let elem = this.state.isBeingEdited
             ? (<Grid>
                     <PollBeingEditedComponent
                         poll={this.props.poll}
@@ -83,12 +86,13 @@ class PollInFeedContainer extends Component {
                 </Grid>
             )
             ;
+        return (<div style={card}>{elem}</div>);
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        userId: state.user.id
+        userId: state.user.id,
     };
 };
 
