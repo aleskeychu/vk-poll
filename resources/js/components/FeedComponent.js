@@ -12,7 +12,6 @@ export default class FeedComponent extends Component {
     };
 
     _loadMoreItems = () => {
-        this.setState({isLoading: true});
         const idx = this.props.polls.length === 0 ? null : this.props.polls[this.props.polls.length - 1].id;
         this.props.loadMoreItems(idx); // id of last poll in the feed
     };
@@ -42,7 +41,6 @@ export default class FeedComponent extends Component {
             return (
                 <Waypoint
                     onEnter={this._loadMoreItems}
-                    threshold={2.0}
                 />
             );
         }
