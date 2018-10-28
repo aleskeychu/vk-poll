@@ -8,26 +8,11 @@ import {
 } from "../constants/actions_types";
 import update from 'immutability-helper';
 
-export default function pollsReducer(state = {}, action) {
+export default function pollsReducer(state = [], action) {
     switch (action.type) {
         case VOTED: {
             let newState = state;
             const idxAlter = state.findIndex(poll => poll.id === action.poll_id);
-            // const votes = action.option_ids.map(function (vote_id) {
-            //     return {
-            //         user_id: action.user_id,
-            //         vote_id
-            //     }
-            // });
-            // // adding new vote to 'voted' array of the poll
-            // if (!state[idxAlter].is_anonymous) {
-            //     newState = update(state, {
-            //         [idxAlter]: {
-            //             votes:
-            //                 {$push: votes}
-            //         }
-            //     });
-            // }
 
             // increasing counter of votes for the voted options
             const votedOptionIndices = action.option_ids.map(function (option_id) {
@@ -51,13 +36,14 @@ export default function pollsReducer(state = {}, action) {
                 }
             });
             // updating userVotedFor for the poll
-            return update(newState, {
+            newState = update(newState, {
                 [idxAlter]: {
                     userVotedFor: {
                         $set: action.option_ids
                     }
                 }
             });
+            return newState;
         }
         case UNVOTED: {
             const idxDelete = state.findIndex(poll => poll.id = action.poll_id);
