@@ -28,3 +28,5 @@ export const DELETE_POLL_ERROR = 'DELETE_POLL_ERROR';
 
 export const VOTED = 'VOTED';
 export const VOTED_ERROR = 'voted_error';
+
+export const UNVOTED = 'UNVOTED';
