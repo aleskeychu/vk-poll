@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Label, Row} from "react-bootstrap";
+import {Button, Label, Row, Checkbox} from "react-bootstrap";
 import {pollType} from '../types';
 import PropTypes from 'prop-types';
 
@@ -43,19 +43,20 @@ export default class PollComponent extends Component {
             });
         } else {
             options = this.props.poll.options.map((elem, idx) => {
-                let option = (<Row key={idx}><h4>
+                let option = (<h4>
                     <Button
                         onClick={this.props.onVote(this.props.poll.id, elem.index, this.props.userId)}>
                         {elem.text + ' (' + elem.vote_count + ')'}
                     </Button>
-                </h4></Row>);
-                if (this.props.optionsToVoteFor.find(index => index === elem.index) !== undefined) {
-
-                    option = (<div key={idx} style={{color: 'red'}}>{option}</div>);
+                </h4>);
+                if (this.props.poll.is_multianswer) {
+                    const checked = this.props.optionsToVoteFor.find(index => index === elem.index) !== undefined;
+                    option = (<div>{option}<Checkbox checked={checked} readOnly/></div>);
                 }
-                return option;
+                return (<Row key={idx}>{option}</Row>);
             });
         }
+
         const multiSubmitButton = (!this.props.poll.is_multianswer || this.props.optionsToVoteFor.length === 0)
             ? null
             : (<div>
