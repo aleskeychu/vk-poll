@@ -17,6 +17,16 @@ export default class NewPollAdderComponent extends Component {
 
     };
 
+    resetState = () => {
+        this.setState({
+            title: '',
+            answerOptions: ['', ''],
+            isLoading: false,
+            emptyTitle: null,
+            emptyOptions: null,
+        })
+    };
+
     createPost = () => {
         console.log("createPost");
         if (this.state.title.trim().length === 0) {
@@ -32,7 +42,8 @@ export default class NewPollAdderComponent extends Component {
             this.state.title,
             polls,
             this.state.isMultianswer,
-            this.state.isAnonymous
+            this.state.isAnonymous,
+            this.resetState
         );
     };
 
