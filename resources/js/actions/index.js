@@ -221,11 +221,9 @@ export const unvote = (dispatch) => {
     return (poll_id) => {
         axios.delete(VOTE_URL + '/' + poll_id, authHeaderHelper())
             .then(() => {
-                console.log('unvote success');
                 dispatch(unvoted(poll_id))
             })
             .catch(error => {
-                console.log('unvote error');
             });
     }
 };
