@@ -24,29 +24,38 @@ class FeedController extends Controller
         }
         $polls = $this->addFieldUserVoted($polls->toArray());
         $polls = $this->filterForAnonymous($polls);
+        $polls = $this->unsetVotesField($polls);
         return response()->json($polls);
     }
 
-    private function addFieldUserVoted($polls) {
+    private function addFieldUserVoted($polls)
+    {
         $userId = Auth::user()->id;
-        return array_map(function($poll) use ($userId) {
-            $vote = array_filter($poll['votes'], function($vote) use ($userId) {
+        return array_map(function ($poll) use ($userId) {
+            $votes = array_filter($poll['votes'], function ($vote) use ($userId) {
                 return $vote['user_id'] === $userId;
             });
-            if (!empty($vote)) {
-                $poll['userVotedFor'] = $vote[0]['vote_id'];
-            } else {
-                $poll['userVotedFor'] = -1;
+            $poll['userVotedFor'] = array_map(function ($vote) {
+                return $vote['vote_id'];
+            }, $votes);
+            return $poll;
+        }, $polls);
+    }
+
+    private function filterForAnonymous($polls)
+    {
+        return array_map(function ($poll) {
+            if ($poll['is_anonymous']) {
+                $poll['votes'] = [];
             }
             return $poll;
         }, $polls);
     }
 
-    private function filterForAnonymous($polls) {
-        return array_map(function($poll) {
-            if ($poll['is_anonymous']) {
-                $poll['votes'] = [];
-            }
+    private function unsetVotesField($polls)
+    {
+        return array_map(function ($poll) {
+            unset($poll['votes']);
             return $poll;
         }, $polls);
     }
