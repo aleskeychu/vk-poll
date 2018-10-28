@@ -81,7 +81,8 @@ export const createPoll = (dispatch) => {
         title,
         options,
         isMultianswer,
-        isAnonymous
+        isAnonymous,
+        success_callback,
     ) => {
         dispatch(pollIsBeingCreated());
         return axios.post(POLL_URL, {
@@ -93,6 +94,7 @@ export const createPoll = (dispatch) => {
             .then(() => {
                 dispatch(pollSuccessfullyCreated());
                 refreshPolls(dispatch)(); // refresh
+                success_callback();
             })
             .catch((error) => {
                 dispatch(errorCreatingPoll(error));
@@ -108,10 +110,10 @@ const editPollStarted = (id) => {
     };
 };
 
-const editPollSuccess = (poll) => {
+const editPollSuccess = (id, title, options) => {
     return {
         type: type.EDIT_POLL_SUCCESS,
-        poll
+        id, title, options
     };
 };
 
@@ -128,14 +130,15 @@ export const editPoll = (dispatch) => {
         title,
         options
     ) => {
+        options = options.filter(option => option.text.trim() !== '');
         dispatch(editPollStarted());
-        axios.post(POLL_URL + '/' + id, {
+        axios.put(POLL_URL + '/' + id, {
             title, options
         }, authHeaderHelper())
-            .then(response => {
-                dispatch(editPollSuccess(response.data));
+            .then(() => {
+                dispatch(editPollSuccess(id, title, options));
             })
-            .error(error => {
+            .catch(error => {
                 dispatch(editPollError(id)); // TODO maybe use error var somehow
             });
     }
@@ -173,11 +176,11 @@ export const deletePoll = (dispatch) => {
     };
 };
 
-const voted = (poll_id, option_id, user_id) => {
+const voted = (poll_id, option_ids, user_id) => {
     return {
         type: type.VOTED,
         poll_id,
-        option_id,
+        option_ids,
         user_id
     };
 };
@@ -191,18 +194,38 @@ const voted_error = (poll_id, option_id) => {
 };
 
 export const vote = (dispatch) => {
-    return (poll_id, option_id, user_id) => {
+    return (poll_id, option_ids, user_id) => {
         // TODO maybe dispatch started ?
         axios.post(VOTE_URL, {
-            poll_id, option_id
+            poll_id, option_ids
         }, authHeaderHelper())
             .then(() => {
-                dispatch(voted(poll_id, option_id, user_id))
+                dispatch(voted(poll_id, option_ids, user_id))
             })
             .catch(error => {
                 // TODO write reducer for it
                 // TODO handle case when option has been deleted
-                dispatch(voted_error(poll_id, option_id));
+                dispatch(voted_error(poll_id, option_ids));
+            });
+    }
+};
+
+const unvoted = (poll_id) => {
+    return {
+        type: type.UNVOTED,
+        poll_id
+    };
+};
+
+export const unvote = (dispatch) => {
+    return (poll_id) => {
+        axios.delete(VOTE_URL + '/' + poll_id, authHeaderHelper())
+            .then(() => {
+                console.log('unvote success');
+                dispatch(unvoted(poll_id))
+            })
+            .catch(error => {
+                console.log('unvote error');
             });
     }
 };
