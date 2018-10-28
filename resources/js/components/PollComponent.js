@@ -2,58 +2,89 @@ import React, {Component} from 'react';
 import {Button, Label, Row, Checkbox} from "react-bootstrap";
 import {pollType} from '../types';
 import PropTypes from 'prop-types';
+import aligner from '../styles/aligner.css';
+import cardHeaderStyle from '../styles/cardHeader.css';
+import cardEditDelete from '../styles/cardEditDelete.css';
+import UserComponent from './UserComponent';
+import userHeaderStyle from "../styles/userHeader.css";
+import subbuttonStyle from '../styles/subbutton.css';
+import titleStyle from '../styles/title.css';
+import subtitleStyle from '../styles/subtitle.css';
+import rowStyle from '../styles/row.css';
+import clickableOptionStyle from '../styles/clickableOption.css';
+import optionRowStyle from '../styles/optionRow.css';
+import multianswerOptionStyle from '../styles/multianswerOption.css';
+import optionCheckboxStyle from '../styles/optionCheckbox.css';
+import optionVotedStyle from '../styles/optionVoted.css';
+import optionNotVotedStyle from '../styles/optionNotVoted.css';
 
 export default class PollComponent extends Component {
-
 
     render() {
         const userHasVoted = this.props.poll.userVotedFor.length !== 0;
         const creatorIsCurrentUser = this.props.userId === this.props.poll.user_id;
 
         const header = (
-            <div><Row>
-                {/*<UserComponent user={this.props.user} />*/}
-                {creatorIsCurrentUser
-                    ? (<div>
-                        <Button onClick={this.props.onEdit}>edit</Button>
-                        <Button onClick={this.props.onDelete}>delete</Button>
-                    </div>)
-                    : null
-                }
-            </Row></div>
+            <div style={{width: '100%'}}>
+                <Row style={cardHeaderStyle}>
+                    <UserComponent
+                        user={this.props.poll.user}
+                        style={userHeaderStyle}
+                        creationTime={this.props.poll.created_at}
+                    />
+                    {creatorIsCurrentUser
+                        ? (<div style={cardEditDelete}>
+                            {(creatorIsCurrentUser && userHasVoted
+                                    ? <Button style={subbuttonStyle} onClick={this.props.onUnvote}>Unvote</Button>
+                                    : null
+                            )}
+                            <Button style={subbuttonStyle} onClick={this.props.onEdit}>edit</Button>
+                            <Button style={subbuttonStyle} onClick={this.props.onDelete}>delete</Button>
+                        </div>)
+                        : null
+                    }
+                </Row>
+            </div>
         );
 
-        const unvoteButton = (creatorIsCurrentUser && userHasVoted)
-            ? (<div>
-                <Button onClick={this.props.onUnvote}>Unvote</Button>
-            </div>)
-            : null;
-
-        const title = (<Row><h3><Label>{this.props.poll.title}</Label></h3></Row>);
-        const typeOfPoll = (<Row><h4><Label>{this.props.poll.is_anonymous ? 'Anonymous poll' : 'Public poll'}</Label></h4></Row>);
+        const title = (<Row style={rowStyle}><h3 style={titleStyle}><Label>{this.props.poll.title}</Label></h3></Row>);
+        const typeOfPoll = (
+            <Row><h4><Label
+                style={subtitleStyle}>{this.props.poll.is_anonymous ? 'Anonymous poll' : 'Public poll'}</Label>
+            </h4></Row>);
 
         let options;
         if (userHasVoted) {
             options = this.props.poll.options.map((elem, idx) => {
-                let option = (<Row key={idx}><h4><Label>{elem.text + ' (' + elem.vote_count + ')'} </Label></h4></Row>);
+                let option = (
+                    <Row>
+                        <h4 style={{margin: '0 auto'}}>
+                            {elem.text + ' (' + elem.vote_count + ')'}
+                        </h4>
+                    </Row>);
                 if (this.props.poll.userVotedFor.find(index => index === elem.index) !== undefined) {
-                    option = (<div key={idx}>{option}</div>);
+                    option = (<div style={optionVotedStyle} key={idx}>{option}</div>);
+                } else {
+                    option = (<div style={optionNotVotedStyle} key={idx}>{option}</div>);
                 }
                 return option;
             });
         } else {
             options = this.props.poll.options.map((elem, idx) => {
-                let option = (<h4>
-                    <Button
-                        onClick={this.props.onVote(this.props.poll.id, elem.index, this.props.userId)}>
-                        {elem.text + ' (' + elem.vote_count + ')'}
-                    </Button>
-                </h4>);
+                let option = (
+                    <h4 style={{width: '100%',}}>
+                        <Button
+                            style={clickableOptionStyle}
+                            onClick={this.props.onVote(this.props.poll.id, elem.index, this.props.userId)}>
+                            {elem.text + ' (' + elem.vote_count + ')'}
+                        </Button>
+                    </h4>);
                 if (this.props.poll.is_multianswer) {
                     const checked = this.props.optionsToVoteFor.find(index => index === elem.index) !== undefined;
-                    option = (<div>{option}<Checkbox checked={checked} readOnly/></div>);
+                    option = (<div style={multianswerOptionStyle}>{option}<Checkbox style={optionCheckboxStyle}
+                                                                                    checked={checked} readOnly/></div>);
                 }
-                return (<Row key={idx}>{option}</Row>);
+                return (<Row style={optionRowStyle} key={idx}>{option}</Row>);
             });
         }
 
@@ -64,9 +95,8 @@ export default class PollComponent extends Component {
                 </div>
             );
         return (
-            <div>
+            <div style={aligner}>
                 {header}
-                {unvoteButton}
                 {title}
                 {typeOfPoll}
                 {options}

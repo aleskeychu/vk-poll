@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
-import {Checkbox, Button} from 'react-bootstrap';
+import {Checkbox, Button, Row} from 'react-bootstrap';
 import EditableTitleAndOptionsComponent from "./EditableTitleAndOptionsComponent";
 import PropTypes from 'prop-types';
 import {PollCreationStatus} from "../constants/actions_types";
+import center from '../styles/center.css';
+import aligner from '../styles/aligner.css';
+import card from '../styles/card.css'
+import button from '../styles/button.css';
+import checkboxText from '../styles/checkboxText.css';
+import alignHorizontally from "../styles/alignHorizontally.css";
 
 export default class NewPollAdderComponent extends Component {
 
@@ -91,8 +97,9 @@ export default class NewPollAdderComponent extends Component {
     render() {
         const isLoading = this.state.isLoading;
         return (
-            <div>
+            <div style={{...aligner, ...card}}>
                 <EditableTitleAndOptionsComponent
+                    topTitle='Create new poll'
                     title={this.state.title}
                     answerOptions={this.state.answerOptions}
                     handleTitleChange={this.handleTitleChange}
@@ -100,15 +107,21 @@ export default class NewPollAdderComponent extends Component {
                     handleDeleteOption={this.handleDeleteOption}
                     handleOptionClick={this.handleOptionClick}
                 />
-                <Checkbox value={this.state.isMultianswer} onClick={this.onMultianswerToggle}>
-                    Choose multiple options
-                </Checkbox>
-                <Checkbox value={this.state.isAnonymous} onClick={this.onAnonymousToggle}>
-                    Anonymous poll
-                </Checkbox>
+                <div>
+                    <Row>
+                        <Checkbox value={this.state.isMultianswer} onClick={this.onMultianswerToggle}/>
+                        <div style={checkboxText}>Choose multiple options</div>
+                    </Row>
+                    <Row>
+                        <Checkbox value={this.state.isAnonymous} onClick={this.onAnonymousToggle}/>
+                        <div style={checkboxText}>Anonymous poll</div>
+                    </Row>
+                </div>
                 <Button
                     disabled={isLoading}
-                    onClick={isLoading ? null : this.createPost}> Create </Button>
+                    onClick={isLoading ? null : this.createPost}
+                    style={button}
+                > Create </Button>
             </div>
         );
     }

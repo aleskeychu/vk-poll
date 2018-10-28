@@ -84,6 +84,7 @@ class PollBeingEditedComponent extends Component {
         return (
             <div>
                 <EditableTitleAndOptionsComponent
+                    topTitle='Edit poll'
                     title={this.state.title}
                     answerOptions={answerOptions}
                     handleOptionChange={this.handleOptionChange}

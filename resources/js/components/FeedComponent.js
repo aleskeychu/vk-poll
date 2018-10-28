@@ -4,6 +4,8 @@ import PollInFeedContainer from '../containers/PollInFeedContainer';
 import NewPollAdderContainer from '../containers/NewPollAdderContainer';
 import PropTypes from 'prop-types';
 import {pollType} from '../types';
+import center from '../styles/center.css';
+import feed from '../styles/feed.css';
 
 export default class FeedComponent extends Component {
 
@@ -48,7 +50,7 @@ export default class FeedComponent extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{...center, ...feed}}>
                 {this._renderNewPollAdder()}
                 {this._renderItems()}
                 {this._renderWaypoint()}
