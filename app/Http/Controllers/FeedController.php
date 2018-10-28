@@ -8,19 +8,21 @@ use Auth;
 
 class FeedController extends Controller
 {
+    const DEFAULT_POLL_BATCH_SIZE = 10;
+
     public function index(Request $request)
     {
         $data = $request->validate([
             'poll_id' => 'numeric',
             'amount' => 'numeric',
         ]);
-        $amount = $data['amount'] ?? 20;
+        $amount = $data['amount'] ?? $this::DEFAULT_POLL_BATCH_SIZE;
         if (!isset($data['poll_id'])) {
             $polls = Poll::orderBy('created_at', 'desc')->take($amount)->with('user')->with('options')->with('votes')->get();
         } else {
             $mark = Poll::find($data['poll_id']);
-            $polls = Poll::where('created_at', '<', $mark->created_at)->order_by('created_at', 'desc')
-                ->take($amount)->with('options')->get();
+            $polls = Poll::where('created_at', '<', $mark->created_at)->orderBy('created_at', 'desc')
+                ->take($amount)->with('options')->with('votes')->get();
         }
         $polls = $this->addFieldUserVoted($polls->toArray());
         $polls = $this->filterForAnonymous($polls);
