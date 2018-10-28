@@ -71,9 +71,6 @@ export default class NewPollAdderComponent extends Component {
         console.log('hello');
         const options = this.state.answerOptions.slice();
         options[idx] = e.target.value;
-        if (idx + 1 === this.state.answerOptions.length && idx + 1 !== 10) {
-            options.push('');
-        }
         this.setState({answerOptions: options});
     };
 

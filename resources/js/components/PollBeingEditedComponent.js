@@ -36,9 +36,6 @@ class PollBeingEditedComponent extends Component {
     handleOptionChange = (idx) => (e) => {
         const options = this.state.options.slice();
         options[idx].text = e.target.value;
-        if (idx + 1 === this.state.options.length && idx + 1 !== 10) {
-            options.push({text: '', index: this.state.topOptionId + 1, vote_count: 0});
-        }
         this.setState({
             options,
             topOptionId: this.state.topOptionId + 1
@@ -62,13 +59,23 @@ class PollBeingEditedComponent extends Component {
             this.setState({emptyOptions: 'error'});
             return;
         }
-
         this.props.onSubmit(
             this.props.poll.id,
             this.state.title,
             this.state.options
         );
         this.props.toggleEditingState();
+    };
+
+    handleOptionClick = (idx) => () => {
+        const options = this.state.options.slice();
+        if (idx + 1 === this.state.options.length && idx + 1 !== 10) {
+            options.push({text: '', index: this.state.topOptionId + 1, vote_count: 0});
+        }
+        this.setState({
+            options,
+            topOptionId: this.state.topOptionId + 1
+        });
     };
 
     render() {
@@ -82,6 +89,7 @@ class PollBeingEditedComponent extends Component {
                     handleOptionChange={this.handleOptionChange}
                     handleTitleChange={this.handleTitleChange}
                     handleDeleteOption={this.handleDeleteOption}
+                    handleOptionClick={this.handleOptionClick}
                 />
                 <Button onClick={this.props.toggleEditingState}>Cancel</Button>
                 <Button onClick={this.handleSubmit}>Save</Button>
