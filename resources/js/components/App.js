@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import TestComponent from './TestComponent';
 import reducer from '../reducers';
 import {PollCreationStatus} from "../constants/actions_types";
-
+import background from '../styles/background.css';
 
 const jwtToken = window.localStorage.getItem('jwtToken');
 const userId = window.localStorage.getItem('userId');
@@ -36,9 +36,9 @@ const store = createStore(reducer, initialState, applyMiddleware(thunk));
 export default class App extends Component {
     render() {
         return (
-            <div>
+            <div style={background}>
                 <Provider store={store}>
-                        <TestComponent />
+                        <TestComponent/>
                 </Provider>
             </div>
         );
