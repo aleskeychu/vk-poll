@@ -3,18 +3,25 @@ import {Button, Checkbox, ControlLabel, FormControl, FormGroup} from "react-boot
 import EditableTitleAndOptionsComponent from "./EditableTitleAndOptionsComponent";
 import PropTypes from 'prop-types';
 import {pollType} from "../types";
+import update from 'immutability-helper';
+import {editPoll} from "../actions";
+import {connect} from 'react-redux';
 
-export default class PollBeingEditedComponent extends Component {
+class PollBeingEditedComponent extends Component {
 
     constructor(props) {
         super();
 
+        const option_indeces = props.poll.options.map((option) => {
+            return option.index;
+        });
+
         this.state = {
-            title: props.title,
-            options: this.props.options,
+            title: props.poll.title,
+            options: props.poll.options,
             emptyTitle: false,
             emptyOption: false,
-            topOptionId: this.props.topOptionId
+            topOptionId: Math.max(...option_indeces)
         }
     }
 
@@ -27,10 +34,10 @@ export default class PollBeingEditedComponent extends Component {
     };
 
     handleOptionChange = (idx) => (e) => {
-        const options = this.state.answerOptions.slice();
+        const options = this.state.options.slice();
         options[idx].text = e.target.value;
-        if (idx + 1 === this.state.answerOptions.length && idx + 1 !== 10) {
-            options.push({text: '', id: this.state.topOptionId + 1, count: 0});
+        if (idx + 1 === this.state.options.length && idx + 1 !== 10) {
+            options.push({text: '', index: this.state.topOptionId + 1, vote_count: 0});
         }
         this.setState({
             options,
@@ -39,9 +46,10 @@ export default class PollBeingEditedComponent extends Component {
     };
 
     handleDeleteOption = (idx) => () => {
-        const options = this.state.answerOptions.slice();
-        options.splice(idx, 1);
-        this.setState({answerOptions: options})
+        const options = update(this.state.options, {$splice: [[idx, 1]]});
+        this.setState({
+            options
+        });
     };
 
     handleSubmit = () => {
@@ -55,11 +63,12 @@ export default class PollBeingEditedComponent extends Component {
             return;
         }
 
-        this.editPoll(
-            this.props.id,
+        this.props.onSubmit(
+            this.props.poll.id,
             this.state.title,
             this.state.options
         );
+        this.props.toggleEditingState();
     };
 
     render() {
@@ -72,16 +81,24 @@ export default class PollBeingEditedComponent extends Component {
                     answerOptions={answerOptions}
                     handleOptionChange={this.handleOptionChange}
                     handleTitleChange={this.handleTitleChange}
+                    handleDeleteOption={this.handleDeleteOption}
                 />
-                <Button onClick={this.props.onCancel}>Cancel</Button>
+                <Button onClick={this.props.toggleEditingState}>Cancel</Button>
                 <Button onClick={this.handleSubmit}>Save</Button>
             </div>
         )
     }
 }
 
-PollBeingEditedComponent.propTypes = {
-    ...pollType,
-    onSubmit: PropTypes.func,
-    onCancel: PropTypes.func
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onSubmit: editPoll(dispatch)
+    };
 };
+
+PollBeingEditedComponent.propTypes = {
+    poll: PropTypes.shape(pollType),
+    toggleEditingState: PropTypes.func
+};
+
+export default connect(null, mapDispatchToProps)(PollBeingEditedComponent);
