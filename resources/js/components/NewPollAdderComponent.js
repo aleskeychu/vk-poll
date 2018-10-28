@@ -49,13 +49,13 @@ export default class NewPollAdderComponent extends Component {
 
     onAnonymousToggle = (e) => {
         this.setState({
-            isAnonymous: e.target.checked
+            isAnonymous: !this.state.isAnonymous
         });
     };
 
     onMultianswerToggle = (e) => {
         this.setState({
-            isMultianswer: e.target.checked
+            isMultianswer: !this.state.isMultianswer
         });
     };
 
@@ -68,6 +68,7 @@ export default class NewPollAdderComponent extends Component {
     };
 
     handleOptionChange = (idx) => (e) => {
+        console.log('hello');
         const options = this.state.answerOptions.slice();
         options[idx] = e.target.value;
         if (idx + 1 === this.state.answerOptions.length && idx + 1 !== 10) {
@@ -82,6 +83,14 @@ export default class NewPollAdderComponent extends Component {
         this.setState({answerOptions: options})
     };
 
+    handleOptionClick = (idx) => () => {
+        const options = this.state.answerOptions.slice();
+        if (idx + 1 === this.state.answerOptions.length && idx + 1 !== 10) {
+            options.push('');
+        }
+        this.setState({answerOptions: options});
+    };
+
     render() {
         const isLoading = this.state.isLoading;
         return (
@@ -92,14 +101,15 @@ export default class NewPollAdderComponent extends Component {
                     handleTitleChange={this.handleTitleChange}
                     handleOptionChange={this.handleOptionChange}
                     handleDeleteOption={this.handleDeleteOption}
+                    handleOptionClick={this.handleOptionClick}
                 />
-                <Checkbox onClick={this.onMultianswerToggle}>
+                <Checkbox value={this.state.isMultianswer} onClick={this.onMultianswerToggle}>
                     Choose multiple options
                 </Checkbox>
-                <Checkbox onClick={this.onAnonymousToggle}>
+                <Checkbox value={this.state.isAnonymous} onClick={this.onAnonymousToggle}>
                     Anonymous poll
                 </Checkbox>
-                < Button
+                <Button
                     disabled={isLoading}
                     onClick={isLoading ? null : this.createPost}> Create </Button>
             </div>
