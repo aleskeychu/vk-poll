@@ -25,9 +25,8 @@ export const pollType = {
     options: arrayOf(shape(optionType)),
     is_anonymous: number,
     is_multianswer: number,
-    userVotedFor: number,
+    userVotedFor: arrayOf(number),
     user_id: number,
     created_at: string,
     user: shape(userType),
-    votes: arrayOf(shape(voteType)),
 };
