@@ -2,15 +2,17 @@ import React, {Component} from 'react';
 import {Grid} from 'react-bootstrap';
 import PollComponent from '../components/PollComponent';
 import PollBeingEditedComponent from '../components/PollBeingEditedComponent';
-import {editPoll, deletePoll, vote} from "../actions";
+import {editPoll, deletePoll, vote, unvote} from "../actions";
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {pollType} from "../types";
+import update from 'immutability-helper';
 
 class PollInFeedContainer extends Component {
 
     state = {
-        isBeingEdited: false
+        isBeingEdited: false,
+        optionsToVoteFor: []
     };
 
     onEdit = () => {
@@ -19,13 +21,9 @@ class PollInFeedContainer extends Component {
         });
     };
 
-    onSubmit = () => {
-
-    };
-
-    onCancel = () => {
+    toggle = () => {
         this.setState({
-            isBeingEdited: false
+           isBeingEdited: !this.state.isBeingEdited
         });
     };
 
@@ -33,17 +31,40 @@ class PollInFeedContainer extends Component {
         this.props.onDelete(this.props.poll.id);
     };
 
-    onVote = (poll_id, option_id, user_id) => () => {
-        this.props.onVote(poll_id, option_id, user_id);
+    onVoteSingle = (poll_id, option_id, user_id) => () => {
+        console.log('wtf');
+        this.props.onVote(poll_id, [option_id], user_id);
+    };
+
+    onVoteMulti = (poll_id, option_id, _) => () => {
+        const arrayIndex = this.state.optionsToVoteFor.findIndex(option_index => option_index === option_id);
+        let state;
+        if (arrayIndex !== -1) {
+            state = update(this.state, {optionsToVoteFor: {$splice: [[arrayIndex, 1]]}});
+        } else {
+            state = update(this.state, {optionsToVoteFor: {$push: [option_id]}});
+        }
+        this.setState(state);
+    };
+
+    onMultiSubmit = () => {
+        this.props.onVote(this.props.poll.id, this.state.optionsToVoteFor, this.props.userId);
+        this.setState({
+            optionsToVoteFor: []
+        });
+    };
+
+    onUnvote = () => {
+        this.props.onUnvote(this.props.poll.id);
     };
 
     render() {
+        const onVote = this.props.poll.is_multianswer ? this.onVoteMulti : this.onVoteSingle;
         return this.state.isBeingEdited
             ? (<Grid>
                     <PollBeingEditedComponent
-                        {...this.props.poll}
-                        onSubmit={this.onSubmit}
-                        onCancel={this.onCancel}
+                        poll={this.props.poll}
+                        toggleEditingState={this.toggle}
                     />
                 </Grid>
             )
@@ -54,7 +75,10 @@ class PollInFeedContainer extends Component {
                         userId={this.props.userId}
                         onEdit={this.onEdit}
                         onDelete={this.onDelete}
-                        onVote={this.onVote}
+                        onVote={onVote}
+                        onUnvote={this.onUnvote}
+                        optionsToVoteFor={this.state.optionsToVoteFor}
+                        onMultiSubmit={this.onMultiSubmit}
                     />
                 </Grid>
             )
@@ -73,6 +97,7 @@ const mapDispatchToProps = (dispatch) => {
         onDelete: deletePoll(dispatch),
         onSubmit: editPoll(dispatch),
         onVote: vote(dispatch),
+        onUnvote: unvote(dispatch)
     };
 };
 
