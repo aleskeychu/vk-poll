@@ -25,7 +25,9 @@ export default class EditableTitleAndOptionsComponent extends Component {
                                         value={this.props.answerOptions[idx]}
                                         onChange={this.props.handleOptionChange(idx)}
                                     />
-                                    <Button onClick={this.props.handleDeleteOption(idx)}>Delete</Button>
+                                    {idx !== 0
+                                    ? (<Button onClick={this.props.handleDeleteOption(idx)}>Delete</Button>)
+                                    : null}
                                 </div>
                             );
                         }, this)}
