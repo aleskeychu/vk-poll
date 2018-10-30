@@ -30,3 +30,5 @@ export const VOTED = 'VOTED';
 export const VOTED_ERROR = 'voted_error';
 
 export const UNVOTED = 'UNVOTED';
+
+export const VOTES = 'VOTES';
