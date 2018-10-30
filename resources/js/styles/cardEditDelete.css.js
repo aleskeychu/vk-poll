@@ -1,3 +1,4 @@
 export default {
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    display: 'flex'
 }
