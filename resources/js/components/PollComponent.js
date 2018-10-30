@@ -96,7 +96,7 @@ export default class PollComponent extends Component {
         const multiSubmitButton = (!this.props.poll.is_multianswer || this.props.optionsToVoteFor.length === 0)
             ? null
             : (<div>
-                    <Button style={subbuttonStyle} onClick={this.props.onMultiSubmit}>Save</Button>
+                    <Button style={subbuttonStyle } onClick={this.props.onMultiSubmit}>Save</Button>
                 </div>
             );
         return (
