@@ -8,16 +8,16 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Feed;
 use App\Poll;
 use App\Option;
 use Illuminate\Http\Request;
 use Auth;
+use Cache;
 use Illuminate\Support\Facades\DB;
 
 class PollController extends Controller
 {
-
     /*
      * If $request contains isMultianswer and isAnonymous fields, then its creation
      * If $request contains id field, then its an update TODO change to a different rest method
@@ -53,6 +53,7 @@ class PollController extends Controller
             );
             Option::insert($options);
         });
+        Feed::invalidateCacheForFeed();
         return response()->json(['success' => 'success'], 200);
     }
 
@@ -99,6 +100,7 @@ class PollController extends Controller
             $poll->title = $data['title'];
             $poll->save();
         });
+        Feed::invalidateCacheForFeed();
         return response()->json(['success' => 'success']);
     }
 
@@ -110,6 +112,7 @@ class PollController extends Controller
             return response()->json(['error' => 'invalid poll id'], 403);
         }
         $poll->delete();
+        Feed::invalidateCacheForFeed();
         return response()->json(['poll_id' => $poll->id]);
     }
 }
