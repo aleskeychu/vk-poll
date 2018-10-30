@@ -5,7 +5,9 @@ const axios = require('axios');
 
 const authHeaderHelper = () => {
     return {
-        headers: {'Authorization': 'Bearer ' + window.localStorage.getItem('jwtToken')}
+        headers: {
+            'Authorization': 'Bearer ' + window.localStorage.getItem('jwtToken'),
+        }
     };
 };
 
