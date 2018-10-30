@@ -32,17 +32,21 @@ export default class PollComponent extends Component {
                         style={userHeaderStyle}
                         creationTime={this.props.poll.created_at}
                     />
-                    {creatorIsCurrentUser
-                        ? (<div style={cardEditDelete}>
-                            {(creatorIsCurrentUser && userHasVoted
-                                    ? <Button style={subbuttonStyle} onClick={this.props.onUnvote}>Unvote</Button>
-                                    : null
-                            )}
-                            <Button style={subbuttonStyle} onClick={this.props.onEdit}>edit</Button>
-                            <Button style={subbuttonStyle} onClick={this.props.onDelete}>delete</Button>
-                        </div>)
+                    <div style={cardEditDelete}>
+                        {(userHasVoted
+                        ? <Button style={subbuttonStyle} onClick={this.props.onUnvote}>Unvote</Button>
                         : null
-                    }
+                        )}
+                        {creatorIsCurrentUser
+                            ? (
+                                <div>
+                                    <Button style={subbuttonStyle} onClick={this.props.onEdit}>edit</Button>
+                                    <Button style={subbuttonStyle} onClick={this.props.onDelete}>delete</Button>
+                                </div>
+                            )
+                            : null
+                        }
+                    </div>
                 </Row>
             </div>
         );
@@ -54,10 +58,11 @@ export default class PollComponent extends Component {
             </h4></Row>);
 
         let options;
+
         if (userHasVoted) {
             options = this.props.poll.options.map((elem, idx) => {
                 let option = (
-                    <Row>
+                    <Row onClick={this.props.showVotesWindow(elem.index)}>
                         <h4 style={{margin: '0 auto'}}>
                             {elem.text + ' (' + elem.vote_count + ')'}
                         </h4>
@@ -91,7 +96,7 @@ export default class PollComponent extends Component {
         const multiSubmitButton = (!this.props.poll.is_multianswer || this.props.optionsToVoteFor.length === 0)
             ? null
             : (<div>
-                    <Button onClick={this.props.onMultiSubmit}>Save</Button>
+                    <Button style={subbuttonStyle} onClick={this.props.onMultiSubmit}>Save</Button>
                 </div>
             );
         return (
@@ -114,5 +119,6 @@ PollComponent.propTypes = {
     onVote: PropTypes.func.isRequired,
     optionsToVoteFor: PropTypes.arrayOf(PropTypes.number).isRequired,
     onMultiSubmit: PropTypes.func.isRequired,
-    onUnvote: PropTypes.func.isRequired
+    onUnvote: PropTypes.func.isRequired,
+    showVotesWindow: PropTypes.func.isRequired,
 };
