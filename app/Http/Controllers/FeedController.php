@@ -5,59 +5,85 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Poll;
 use Auth;
+use Cache;
+use App\Vote;
+use App\Option;
+use App\User;
 
 class FeedController extends Controller
 {
-    const DEFAULT_POLL_BATCH_SIZE = 10;
+    const DEFAULT_POLL_BATCH_SIZE = 4;
+    const CACHE_TTL = 60 * 4;
 
     public function index(Request $request)
     {
         $data = $request->validate([
-            'poll_id' => 'numeric',
-            'amount' => 'numeric',
-        ]);
-        $amount = $data['amount'] ?? $this::DEFAULT_POLL_BATCH_SIZE;
+            'poll_id' => 'numeric']);
+        $amount = $this::DEFAULT_POLL_BATCH_SIZE;
         if (!isset($data['poll_id'])) {
-            $polls = Poll::orderBy('created_at', 'desc')->take($amount)->with('user')->with('options')->with('votes')->get();
+            $version = Cache::get('feed_version', 0);
+            $polls = Cache::get('feed_' . $version);
+            if ($polls === null) {
+                $polls = Poll::orderBy('created_at', 'desc')->take($amount)->get()->toArray();
+                Cache::put('feed_' . $version, $polls, $this::CACHE_TTL);
+            }
         } else {
             $mark = Poll::find($data['poll_id']);
             $polls = Poll::where('created_at', '<', $mark->created_at)->orderBy('created_at', 'desc')
-                ->take($amount)->with('options')->with('votes')->get();
+                ->take($amount)->get()->toArray();
         }
-        $polls = $this->addFieldUserVoted($polls->toArray());
-        $polls = $this->filterForAnonymous($polls);
-        $polls = $this->unsetVotesField($polls);
+        $polls = $this->fillOptionsSubarray($polls);
+        $polls = $this->fillUserVotedFor($polls);
+        $polls = $this->fillUserArray($polls);
+
         return response()->json($polls);
     }
 
-    private function addFieldUserVoted($polls)
+    private function fillOptionsSubarray($polls)
+    {
+        $option_cache_ids = array_map(function ($poll) {
+            return Option::getCacheKey($poll['id']);
+        }, $polls);
+        $options = Option::fetchWithCache($option_cache_ids);
+        return array_map(function ($poll) use ($options) {
+            $option = array_filter($options, function ($key) use ($poll) {
+                return Option::cacheKeyToPollId($key) === $poll['id'];
+            }, ARRAY_FILTER_USE_KEY);
+            // array_filter sets null for other keys, use array_values to have array of one element
+            $poll['options'] = array_values($option)[0];
+            return $poll;
+        }, $polls);
+    }
+
+    private function fillUserVotedFor($polls)
     {
         $userId = Auth::user()->id;
-        return array_map(function ($poll) use ($userId) {
-            $votes = array_filter($poll['votes'], function ($vote) use ($userId) {
-                return $vote['user_id'] === $userId;
-            });
-            $poll['userVotedFor'] = array_map(function ($vote) {
-                return $vote['vote_id'];
-            }, $votes);
+        $cache_ids = array_map(function ($poll) use ($userId) {
+            return Vote::getVotedForCacheKey($userId, $poll['id']);
+        }, $polls);
+        $voted_for_arr = Vote::fetchVotedForWithCache($cache_ids);
+        return array_map(function ($poll) use ($voted_for_arr) {
+            $voted_for_element = array_filter($voted_for_arr, function ($key) use ($poll) {
+                return Vote::votedForCacheKeyToPollId($key) === $poll['id'];
+            }, ARRAY_FILTER_USE_KEY);
+            // array_filter sets null for other keys, use array_values to have array of one element
+            $poll['userVotedFor'] = array_values($voted_for_element)[0];
             return $poll;
         }, $polls);
     }
 
-    private function filterForAnonymous($polls)
+    private function fillUserArray($polls)
     {
-        return array_map(function ($poll) {
-            if ($poll['is_anonymous']) {
-                $poll['votes'] = [];
-            }
-            return $poll;
+        $cache_ids = array_map(function ($poll) {
+            return User::getCacheKey($poll['user_id']);
         }, $polls);
-    }
-
-    private function unsetVotesField($polls)
-    {
-        return array_map(function ($poll) {
-            unset($poll['votes']);
+        $users = User::fetchWithCache($cache_ids);
+        return array_map(function ($poll) use ($users) {
+            $user = array_filter($users, function ($key) use ($poll) {
+                return User::cacheKeyToId($key) === $poll['user_id'];
+            }, ARRAY_FILTER_USE_KEY);
+            // array_filter sets null for other keys, use array_values to have array of one element
+            $poll['user'] = array_values($user)[0];
             return $poll;
         }, $polls);
     }
