@@ -5,19 +5,39 @@ import {userType} from "../types";
 export default class UserComponent extends Component {
     vk_url = 'https://vk.com/';
 
+    static convertTimezone(time) {
+        const datetimeThisTimezone = new Date(time.replace(' ', 'T'));
+        const offset = datetimeThisTimezone.getTimezoneOffset();
+        const datetime = new Date(datetimeThisTimezone.getTime() - offset * 60000);
+        return datetime.getFullYear() + '-' + (datetime.getMonth() + 1)
+            + '-' + datetime.getDate() + ' ' + datetime.getHours() + ':' + datetime.getMinutes();
+    }
+
     render() {
         // get rid of seconds
-        const t = this.props.creationTime;
-        const time = t.substring(0, t.lastIndexOf(':'));
+        let style;
+        if (this.props.nameAtBottom) {
+            style = {display: 'flex', alignItems: 'center', flexDirection: 'column'}
+        } else {
+            style = {display: 'flex', alignItems: 'center'};
+        }
+        let datetimeString;
+        if (this.props.creationTime !== undefined) {
+            datetimeString = UserComponent.convertTimezone(this.props.creationTime);
+        } else {
+            datetimeString = '';
+        }
         return (
-            <div style={{display: 'flex', alignItems: 'center'}}>
-                <a href={this.vk_url + this.props.user.domain}><img style={{borderRadius: '50%'}} src={this.props.user.image_50}/></a>
+            <div style={style}>
+                <a href={this.vk_url + this.props.user.domain}>
+                    <img style={{borderRadius: '50%'}} src={this.props.user.image_50}/>
+                </a>
                 <div style={{display: 'flex', flexDirection: 'column', margin: '0 5px'}}>
                     <div style={{margin: '0 5px'}}>
                         {this.props.user.first_name + ' ' + this.props.user.second_name}
                     </div>
                     <div>
-                        {time}
+                        {datetimeString}
                     </div>
                 </div>
             </div>
@@ -27,5 +47,5 @@ export default class UserComponent extends Component {
 
 UserComponent.propTypes = {
     user: PropTypes.shape(userType).isRequired,
-    creationTime: PropTypes.string.isRequired
+    creationTime: PropTypes.string
 };
