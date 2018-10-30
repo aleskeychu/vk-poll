@@ -46,7 +46,7 @@ export default function pollsReducer(state = [], action) {
             return newState;
         }
         case UNVOTED: {
-            const idxDelete = state.findIndex(poll => poll.id = action.poll_id);
+            const idxDelete = state.findIndex(poll => poll.id === action.poll_id);
             const userVotedFor = state[idxDelete].userVotedFor;
             return update(state, {
                [idxDelete]: {
