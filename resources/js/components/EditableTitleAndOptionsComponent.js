@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {ControlLabel, FormControl, FormGroup, Button} from "react-bootstrap";
 import PropTypes from 'prop-types';
-import center from '../styles/center.css';
 import alignHorizontally from '../styles/alignHorizontally.css';
 import componentStyle from '../styles/editableTitleAndOptionsComponent.css';
 import subbuton from '../styles/subbutton.css';
@@ -10,15 +9,21 @@ import optionStyle from '../styles/options.css';
 
 export default class EditableTitleAndOptionsComponent extends Component {
 
+
     render() {
+        const titleStyle = this.props.emptyTitle ? {borderColor: '#FF4136'} : {borderColor: '#7FDBFF'};
+        const optionColorStyle = this.props.emptyOptions ? {borderColor: '#FF4136'} : {borderColor: '#7FDBFF'};
+
         return (
-            <div style={componentStyle}>
+            <form style={componentStyle}>
                 <FormGroup
                     controlId='newPoll'
+                    validationState={this.props.validationState}
                 >
-                    <ControlLabel>{this.props.topTitle}</ControlLabel>
+                    <ControlLabel> {this.props.topTitle}</ControlLabel>
                     <div>Title</div>
                     <FormControl
+                        style={titleStyle}
                         type='text'
                         value={this.props.title}
                         onChange={this.props.handleTitleChange}
@@ -29,6 +34,7 @@ export default class EditableTitleAndOptionsComponent extends Component {
                             return (
                                 <div style={{...alignHorizontally, ...optionStyle}} key={idx}>
                                     <FormControl
+                                        style={optionColorStyle}
                                         type='text'
                                         value={this.props.answerOptions[idx]}
                                         onChange={this.props.handleOptionChange(idx)}
@@ -42,17 +48,19 @@ export default class EditableTitleAndOptionsComponent extends Component {
                         }, this)}
                     </div>
                 </FormGroup>
-            </div>
+            </form>
         );
     }
 }
 
 EditableTitleAndOptionsComponent.propTypes = {
-    title: PropTypes.string,
-    handleTitleChange: PropTypes.func,
-    answerOptions: PropTypes.arrayOf(PropTypes.string),
-    handleOptionChange: PropTypes.func,
-    handleDeleteOption: PropTypes.func,
-    handleOptionClick: PropTypes.func,
-    topTitle: PropTypes.string
+    title: PropTypes.string.isRequired,
+    handleTitleChange: PropTypes.func.isRequired,
+    answerOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    handleOptionChange: PropTypes.func.isRequired,
+    handleDeleteOption: PropTypes.func.isRequired,
+    handleOptionClick: PropTypes.func.isRequired,
+    topTitle: PropTypes.string.isRequired,
+    emptyTitle: PropTypes.bool.isRequired,
+    emptyOptions: PropTypes.bool.isRequired
 };
