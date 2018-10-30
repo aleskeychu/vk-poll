@@ -6,6 +6,7 @@ import {pollType} from "../types";
 import update from 'immutability-helper';
 import {editPoll} from "../actions";
 import {connect} from 'react-redux';
+import subbuttonStyle from '../styles/subbutton.css';
 
 class PollBeingEditedComponent extends Component {
 
@@ -20,7 +21,7 @@ class PollBeingEditedComponent extends Component {
             title: props.poll.title,
             options: props.poll.options,
             emptyTitle: false,
-            emptyOption: false,
+            emptyOptions: false,
             topOptionId: Math.max(...option_indeces)
         }
     }
@@ -91,9 +92,11 @@ class PollBeingEditedComponent extends Component {
                     handleTitleChange={this.handleTitleChange}
                     handleDeleteOption={this.handleDeleteOption}
                     handleOptionClick={this.handleOptionClick}
+                    emptyTitle={this.state.emptyTitle}
+                    emptyOptions={this.state.emptyOptions}
                 />
-                <Button onClick={this.props.toggleEditingState}>Cancel</Button>
-                <Button onClick={this.handleSubmit}>Save</Button>
+                <Button style={subbuttonStyle} onClick={this.props.toggleEditingState}>Cancel</Button>
+                <Button style={subbuttonStyle} onClick={this.handleSubmit}>Save</Button>
             </div>
         )
     }
