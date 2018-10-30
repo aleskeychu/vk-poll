@@ -28,7 +28,11 @@ const initialState = {
     pollCreationStatus: PollCreationStatus.success,
     user: {
         isAuthenticated: jwtToken !== '',
-        id: parseInt(userId, 10)
+        id: parseInt(userId, 10),
+        first_name: window.localStorage.getItem('name'),
+        second_name: window.localStorage.getItem('surname'),
+        image_50: window.localStorage.getItem('pic'),
+        domain: window.localStorage.getItem('domain')
     }
 };
 const store = createStore(reducer, initialState, applyMiddleware(thunk));

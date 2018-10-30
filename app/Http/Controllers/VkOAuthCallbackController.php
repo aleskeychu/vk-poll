@@ -47,7 +47,13 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
                 $token = JWTAuth::fromUser($user);
                 session()->put('jwtToken', $token);
                 session()->save();
-                return redirect('/feed')->with('jwtToken', $token)->with('userId', $user->id);
+                return redirect('/feed')
+                    ->with('jwtToken', $token)
+                    ->with('userId', $user->id)
+                    ->with('name', $user->first_name)
+                    ->with('surname', $user->second_name)
+                    ->with('pic', $user->image_50)
+                    ->with('domain', $user->domain);
             }
             // TODO
         }

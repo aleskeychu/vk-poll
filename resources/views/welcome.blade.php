@@ -18,6 +18,10 @@
         window.localStorage.setItem('jwtToken', token);
         const userId = '{{session()->get('userId')}}';
         window.localStorage.setItem('userId', userId);
+        window.localStorage.setItem('name', '{{session()->get('name')}}');
+        window.localStorage.setItem('surname', '{{session()->get('surname')}}');
+        window.localStorage.setItem('pic', '{{session()->get('pic')}}');
+        window.localStorage.setItem('domain', '{{session()->get('domain')}}');
     }
 </script>
 <script src="{{asset('js/app.js')}}" ></script>
