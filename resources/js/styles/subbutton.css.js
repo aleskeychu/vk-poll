@@ -1,6 +1,6 @@
 export default {
     "display": "inline-block",
-    "margin": "0 0.5rem",
+    "margin": "0 4px",
     "padding": "0 0.5",
     "borderRadius": "0.317rem",
     "backgroundColor": "#E8E9EB",
@@ -11,5 +11,6 @@ export default {
     "fontFamily": "\"Helvetica Neue\", Arial, sans-serif",
     "cursor": "pointer",
     "WebkitAppearance": "none",
-    "WebkitFontSmoothing": "antialiased"
+    "WebkitFontSmoothing": "antialiased",
+    "height": '100%'
 };
