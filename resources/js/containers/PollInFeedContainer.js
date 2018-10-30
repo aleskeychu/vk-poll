@@ -7,14 +7,17 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {pollType} from "../types";
 import update from 'immutability-helper';
+import VotesComponent from '../components/VotesComponent';
 
 import card from '../styles/card.css';
-import aligner from '../styles/aligner.css';
 
 class PollInFeedContainer extends Component {
 
+    // TODO switch to Object.freeze to have just 3 states, not 4
     state = {
         isBeingEdited: false,
+        isShowingVotes: false,
+        showingVotesForOption: -1,
         optionsToVoteFor: []
     };
 
@@ -26,7 +29,7 @@ class PollInFeedContainer extends Component {
 
     toggle = () => {
         this.setState({
-           isBeingEdited: !this.state.isBeingEdited
+            isBeingEdited: !this.state.isBeingEdited
         });
     };
 
@@ -35,7 +38,6 @@ class PollInFeedContainer extends Component {
     };
 
     onVoteSingle = (poll_id, option_id, user_id) => () => {
-        console.log('wtf');
         this.props.onVote(poll_id, [option_id], user_id);
     };
 
@@ -61,8 +63,17 @@ class PollInFeedContainer extends Component {
         this.props.onUnvote(this.props.poll.id);
     };
 
+    toggleVotesWindowState = (option_index) => () => {
+        this.setState({
+            isShowingVotes: !this.state.isShowingVotes,
+            showingVotesForOption: option_index
+        });
+    };
+
     render() {
         const onVote = this.props.poll.is_multianswer ? this.onVoteMulti : this.onVoteSingle;
+        const showVotesWindow = this.props.poll.is_anonymous ? () => {
+        } : this.toggleVotesWindowState;
         let elem = this.state.isBeingEdited
             ? (<Grid>
                     <PollBeingEditedComponent
@@ -72,20 +83,36 @@ class PollInFeedContainer extends Component {
                 </Grid>
             )
             : (
-                <Grid>
-                    <PollComponent
-                        poll={this.props.poll}
-                        userId={this.props.userId}
-                        onEdit={this.onEdit}
-                        onDelete={this.onDelete}
-                        onVote={onVote}
-                        onUnvote={this.onUnvote}
-                        optionsToVoteFor={this.state.optionsToVoteFor}
-                        onMultiSubmit={this.onMultiSubmit}
-                    />
-                </Grid>
-            )
-            ;
+                this.state.isShowingVotes ?
+                    (
+                        <Grid>
+                            <VotesComponent
+                                poll_id={this.props.poll.id}
+                                option_id={this.state.showingVotesForOption}
+                                title={this.props.poll.title}
+                                option_text={this.props.poll.options.find(
+                                    option => option.index === this.state.showingVotesForOption)
+                                    .text}
+                                goBack={showVotesWindow(-1)}
+                            />
+                        </Grid>
+                    )
+                    : (
+                        <Grid>
+                            <PollComponent
+                                poll={this.props.poll}
+                                userId={this.props.userId}
+                                onEdit={this.onEdit}
+                                onDelete={this.onDelete}
+                                onVote={onVote}
+                                onUnvote={this.onUnvote}
+                                optionsToVoteFor={this.state.optionsToVoteFor}
+                                onMultiSubmit={this.onMultiSubmit}
+                                showVotesWindow={showVotesWindow}
+                            />
+                        </Grid>
+                    ))
+        ;
         return (<div style={card}>{elem}</div>);
     }
 }
@@ -93,6 +120,7 @@ class PollInFeedContainer extends Component {
 const mapStateToProps = (state) => {
     return {
         userId: state.user.id,
+        polls: state.polls
     };
 };
 
@@ -110,7 +138,8 @@ PollInFeedContainer.propTypes = {
     poll: PropTypes.shape(pollType),
     onDelete: PropTypes.func,
     onSubmit: PropTypes.func,
-    onVote: PropTypes.func
+    onVote: PropTypes.func,
+    onUnvote: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollInFeedContainer);
