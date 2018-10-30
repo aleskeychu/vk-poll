@@ -5,9 +5,9 @@ import SidebarComponent from './SidebarComponent';
 export default class MainComponent extends Component {
     render() {
         return (
-            <div>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <SidebarComponent/>
                 <FeedContainer />
-                <SidebarComponent />
             </div>
         )
     }
