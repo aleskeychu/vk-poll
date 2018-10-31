@@ -15,7 +15,8 @@ fi
 #    npm install
 #fi
 
-sleep 20
+# let db container init before migrating TODO do it differently
+sleep 15
 php artisan migrate
 
 exec /usr/bin/supervisord -n -c /etc/supervisord.conf
