@@ -66,7 +66,7 @@ WORKDIR /var/www
 
 COPY . /var/www/
 
-RUN chown root:nginx /var/www/storage/logs
-RUN chmod 771 /var/www/storage/logs
+RUN find /var/www/storage -exec chown root:nginx {} \;
+RUN find /var/www/storage -exec chmod 771 {} \;
 
 ENTRYPOINT ["sh", "/start.sh"]
