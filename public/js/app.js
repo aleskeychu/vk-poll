@@ -22147,7 +22147,8 @@ function polyfill(Component) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FETCH_POLLS_URL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return POLL_URL; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return VOTE_URL; });
-var BASE_URL = 'http://localhost:8000/api/';
+// TODO refactor to fetch url from env
+var BASE_URL = 'http://142.93.238.101:8000/api/';
 
 // GET
 var FETCH_POLLS_URL = BASE_URL + 'polls?';
@@ -72329,8 +72330,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-//TODO change client_id to real id
-var vk_url = 'https://oauth.vk.com/authorize?client_id=6727304&redirect_uri=http://localhost:8000/vkcallback';
+//TODO refactor to fetch url from env
+var vk_url = 'https://oauth.vk.com/authorize?client_id=6727304&redirect_uri=http://142.93.238.101:8000/vkcallback';
 
 var LoginComponent = function (_Component) {
     _inherits(LoginComponent, _Component);
