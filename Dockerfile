@@ -66,4 +66,6 @@ WORKDIR /var/www
 
 COPY . /var/www/
 
+RUN chown nginx:nginx /var/www/storage/logs
+
 ENTRYPOINT ["sh", "/start.sh"]
