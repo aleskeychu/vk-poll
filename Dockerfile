@@ -24,7 +24,9 @@ RUN apk add --update \
     php7-session \
     php7-zlib \
     php7-tokenizer \
-    php7-memcached && \
+    php7-memcached \
+    php7-xsl \
+    php7-xmlwriter && \
     php7 -r "copy('http://getcomposer.org/installer', 'composer-setup.php');" && \
     php7 composer-setup.php --install-dir=/usr/bin --filename=composer && \
     php7 -r "unlink('composer-setup.php');" && \
@@ -61,5 +63,7 @@ RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" \
 
 EXPOSE 443 80
 WORKDIR /var/www
+
+COPY . /var/www/
 
 ENTRYPOINT ["sh", "/start.sh"]
