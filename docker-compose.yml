@@ -7,8 +7,8 @@ services:
     image: poll-app
     ports:
     - "8000:80"
-    volumes:
-      - ./:/var/www
+    env_file:
+    -  .env
   db:
     image: mysql:5.7
     volumes:
