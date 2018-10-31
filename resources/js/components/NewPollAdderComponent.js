@@ -16,8 +16,8 @@ export default class NewPollAdderComponent extends Component {
         isLoading: false,
         isAnonymous: false,
         isMultianswer: false,
-        emptyTitle: null,
-        emptyOptions: null,
+        emptyTitle: false,
+        emptyOptions: false,
 
     };
 
@@ -26,8 +26,8 @@ export default class NewPollAdderComponent extends Component {
             title: '',
             answerOptions: ['', ''],
             isLoading: false,
-            emptyTitle: null,
-            emptyOptions: null,
+            emptyTitle: false,
+            emptyOptions: false,
         })
     };
 
