@@ -3,8 +3,6 @@
 if [[ ! -d "/var/www/vendor" ]];
 then
     cd /var/www
-    php artisan clear-compiled
-    composer install --no-scripts
     composer update
     composer dump-autoload -o
 fi
