@@ -1,4 +1,4 @@
-FROM trafex/alpine-nginx-php7
+FROM nginx:mainline-alpine
 LABEL maintainer="Aleksey Churshin"
 
 ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
@@ -36,19 +36,6 @@ RUN apk add --update \
     openssh-client \
     supervisor
 
-RUN set -xe \
-    && apk add --no-cache libmemcached-libs zlib \
-    && apk add --no-cache \
-        --virtual .memcached-deps \
-        $MEMCACHED_DEPS \
-    && git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-    && docker-php-ext-configure /usr/src/php/ext/memcached \
-        --disable-memcached-sasl \
-    && docker-php-ext-install /usr/src/php/ext/memcached \
-    && rm -rf /usr/src/php/ext/memcached \
-    && apk del .memcached-deps
-
-
 RUN mkdir -p /etc/nginx && \
     mkdir -p /etc/nginx/sites-available && \
     mkdir -p /etc/nginx/sites-enabled && \
@@ -71,8 +58,6 @@ RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" \
     -e "s/listen = 127.0.0.1:9000/listen = \/var\/run\/php-fpm.sock/g" \
     -e "s/^;clear_env = no$/clear_env = no/" \
     /etc/php7/php-fpm.d/www.conf
-
-RUN echo -e '\nextension = memcached.so' >> /etc/php7/php.ini
 
 EXPOSE 443 80
 WORKDIR /var/www
