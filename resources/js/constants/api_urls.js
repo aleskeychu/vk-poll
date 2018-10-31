@@ -1,4 +1,5 @@
-const BASE_URL='http://localhost:8000/api/';
+// TODO refactor to fetch url from env
+const BASE_URL='http://142.93.238.101:8000/api/';
 
 // GET
 export const FETCH_POLLS_URL = BASE_URL + 'polls?';

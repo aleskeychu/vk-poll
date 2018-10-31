@@ -4,8 +4,8 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-//TODO change client_id to real id
-const vk_url = 'https://oauth.vk.com/authorize?client_id=6727304&redirect_uri=http://localhost:8000/vkcallback';
+//TODO refactor to fetch url from env
+const vk_url = 'https://oauth.vk.com/authorize?client_id=6727304&redirect_uri=http://142.93.238.101:8000/vkcallback';
 
 class LoginComponent extends Component {
     render() {
