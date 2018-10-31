@@ -1,5 +1,7 @@
-FROM nginx:mainline-alpine
+FROM trafex/alpine-nginx-php7
 LABEL maintainer="Aleksey Churshin"
+
+ENV MEMCACHED_DEPS zlib-dev libmemcached-dev cyrus-sasl-dev git
 
 COPY start.sh /start.sh
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -20,7 +22,9 @@ RUN apk add --update \
     php7-zip \
     php7-dom \
     php7-session \
-    php7-zlib && \
+    php7-zlib \
+    php7-tokenizer \
+    php7-memcached && \
     php7 -r "copy('http://getcomposer.org/installer', 'composer-setup.php');" && \
     php7 composer-setup.php --install-dir=/usr/bin --filename=composer && \
     php7 -r "unlink('composer-setup.php');" && \
@@ -31,6 +35,19 @@ RUN apk add --update \
     bash \
     openssh-client \
     supervisor
+
+RUN set -xe \
+    && apk add --no-cache libmemcached-libs zlib \
+    && apk add --no-cache \
+        --virtual .memcached-deps \
+        $MEMCACHED_DEPS \
+    && git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
+    && docker-php-ext-configure /usr/src/php/ext/memcached \
+        --disable-memcached-sasl \
+    && docker-php-ext-install /usr/src/php/ext/memcached \
+    && rm -rf /usr/src/php/ext/memcached \
+    && apk del .memcached-deps
+
 
 RUN mkdir -p /etc/nginx && \
     mkdir -p /etc/nginx/sites-available && \
@@ -55,7 +72,9 @@ RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" \
     -e "s/^;clear_env = no$/clear_env = no/" \
     /etc/php7/php-fpm.d/www.conf
 
+RUN echo -e '\nextension = memcached.so' >> /etc/php7/php.ini
+
 EXPOSE 443 80
 WORKDIR /var/www
 
-CMD ["/start.sh"]
+ENTRYPOINT ["sh", "/start.sh"]
