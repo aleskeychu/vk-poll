@@ -16,7 +16,8 @@
 - [ ] In frontend add 'isLoading' and 'isError' vars to state of Presentational components to correctly show loading states and improve UX
 - [ ] In frontend add error handlers to show when errors occur and don't silence them
 - [ ] Refactor frontend env-dependant constant to fetch them from env (e.g. url fo the site to localhost when testing and to DO instance's ip in prod)
-- [ ] Properly handle all emojies when passed as text in polls
+- [ ] Properly handle all emojies when passed as text in polls to support https
+- [ ] Get domain and install TLS on DO instance
 - [ ] etc...
 ## Structure
 
