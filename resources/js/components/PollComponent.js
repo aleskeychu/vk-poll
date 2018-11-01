@@ -81,7 +81,7 @@ export default class PollComponent extends Component {
                 }
 
                 let option = (
-                    <h4 style={{margin: '0 auto', }}>
+                    <h4 style={{width: '100%'}}>
                         {button}
                     </h4>);
                 return (<Row key={idx} style={optionPublicRowStyle}>{option}</Row>);
