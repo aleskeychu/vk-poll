@@ -84074,6 +84074,7 @@ function (_React$Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__styles_optionCheckbox_css__ = __webpack_require__(433);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__styles_optionVoted_css__ = __webpack_require__(434);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__styles_optionNotVoted_css__ = __webpack_require__(435);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__styles_optionPublicRowStyle_css__ = __webpack_require__(436);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -84081,6 +84082,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -84215,7 +84217,7 @@ var PollComponent = function (_Component) {
                     );
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["h" /* Row */],
-                        { key: idx },
+                        { key: idx, style: __WEBPACK_IMPORTED_MODULE_19__styles_optionPublicRowStyle_css__["a" /* default */] },
                         option
                     );
                 });
@@ -85332,6 +85334,17 @@ var TOKEN_EXPIRED = 'token_expired';
     margin: '5px',
     padding: '5px',
     background: '#E5EAEF'
+});
+
+/***/ }),
+/* 436 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    width: '100%',
+    margin: '5px',
+    padding: '5px'
 });
 
 /***/ })

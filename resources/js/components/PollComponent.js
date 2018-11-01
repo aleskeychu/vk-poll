@@ -17,6 +17,7 @@ import multianswerOptionStyle from '../styles/multianswerOption.css';
 import optionCheckboxStyle from '../styles/optionCheckbox.css';
 import optionVotedStyle from '../styles/optionVoted.css';
 import optionNotVotedStyle from '../styles/optionNotVoted.css';
+import optionPublicRowStyle from '../styles/optionPublicRowStyle.css';
 
 export default class PollComponent extends Component {
 
@@ -80,10 +81,10 @@ export default class PollComponent extends Component {
                 }
 
                 let option = (
-                    <h4 style={{margin: '0 auto'}}>
+                    <h4 style={{margin: '0 auto', }}>
                         {button}
                     </h4>);
-                return (<Row key={idx}>{option}</Row>);
+                return (<Row key={idx} style={optionPublicRowStyle}>{option}</Row>);
             });
         } else {
             options = this.props.poll.options.map((elem, idx) => {
