@@ -65,6 +65,8 @@ EXPOSE 443 80
 WORKDIR /var/www
 
 COPY . /var/www/
+RUN composer update
+RUN composer dump-autoload -o
 
 RUN find /var/www/storage -exec chown root:nginx {} \;
 RUN find /var/www/storage -exec chmod 771 {} \;
