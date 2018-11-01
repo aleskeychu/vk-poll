@@ -24,7 +24,6 @@ class VoteController extends Controller
         if ($isAnonymous) {
             return response()->json(['error' => 'cant get voters of anonymous polls', 403]);
         }
-
         $vote_id = $data['vote_id'];
         $user_cache_ids = Cache::get(Vote::getVotesCacheKey($poll_id, $vote_id));
         if ($user_cache_ids === null) {
@@ -74,7 +73,7 @@ class VoteController extends Controller
         Cache::forget(Vote::getVotedForCacheKey($user_id, $validated_data['poll_id']));
         Cache::forget(Option::getCacheKey($validated_data['poll_id']));
         foreach ($validated_data['option_ids'] as $id) {
-            Cache::tags([$validated_data['poll_id'], $id])->flush();
+            Cache::forget(Vote::getVotesCacheKey($validated_data['poll_id'], $id));
         }
         return response()->json(['success' => 'success']);
     }
@@ -102,7 +101,6 @@ class VoteController extends Controller
                     [$vote['poll_id'], $vote['vote_id']]
                 );
             }, $votes);
-
         });
         Cache::forget(Vote::getVotedForCacheKey($user_id, $poll_id));
         Cache::forget(Option::getCacheKey($poll_id)); // to fetch vote count again
