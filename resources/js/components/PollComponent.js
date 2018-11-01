@@ -60,18 +60,29 @@ export default class PollComponent extends Component {
         let options;
         if (userHasVoted) {
             options = this.props.poll.options.map((elem, idx) => {
-                let option = (
-                    <h4 style={{margin: '0 auto'}}>
+                let button;
+                if (this.props.poll.userVotedFor.find(index => index === elem.index) !== undefined) {
+                    button = (
                         <Button
+                            style={optionVotedStyle}
                             onClick={this.props.showVotesWindow(elem.index)}>
                             {elem.text + ' (' + elem.vote_count + ')'}
                         </Button>
-                    </h4>);
-                if (this.props.poll.userVotedFor.find(index => index === elem.index) !== undefined) {
-                    option = (<div style={optionVotedStyle} key={idx}>{option}</div>);
+                    );
                 } else {
-                    option = (<div style={optionNotVotedStyle} key={idx}>{option}</div>);
+                    button = (
+                        <Button
+                            style={optionNotVotedStyle}
+                            onClick={this.props.showVotesWindow(elem.index)}>
+                            {elem.text + ' (' + elem.vote_count + ')'}
+                        </Button>
+                    );
                 }
+
+                let option = (
+                    <h4 style={{margin: '0 auto'}}>
+                        {button}
+                    </h4>);
                 return (<Row key={idx}>{option}</Row>);
             });
         } else {

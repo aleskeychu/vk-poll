@@ -84197,31 +84197,32 @@ var PollComponent = function (_Component) {
             var options = void 0;
             if (userHasVoted) {
                 options = this.props.poll.options.map(function (elem, idx) {
-                    var option = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'h4',
-                        { style: { margin: '0 auto' } },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
-                            {
-                                onClick: _this2.props.showVotesWindow(elem.index) },
-                            elem.text + ' (' + elem.vote_count + ')'
-                        )
-                    );
+                    var button = void 0;
                     if (_this2.props.poll.userVotedFor.find(function (index) {
                         return index === elem.index;
                     }) !== undefined) {
-                        option = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { style: __WEBPACK_IMPORTED_MODULE_17__styles_optionVoted_css__["a" /* default */], key: idx },
-                            option
+                        button = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                            {
+                                style: __WEBPACK_IMPORTED_MODULE_17__styles_optionVoted_css__["a" /* default */],
+                                onClick: _this2.props.showVotesWindow(elem.index) },
+                            elem.text + ' (' + elem.vote_count + ')'
                         );
                     } else {
-                        option = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { style: __WEBPACK_IMPORTED_MODULE_18__styles_optionNotVoted_css__["a" /* default */], key: idx },
-                            option
+                        button = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["a" /* Button */],
+                            {
+                                style: __WEBPACK_IMPORTED_MODULE_18__styles_optionNotVoted_css__["a" /* default */],
+                                onClick: _this2.props.showVotesWindow(elem.index) },
+                            elem.text + ' (' + elem.vote_count + ')'
                         );
                     }
+
+                    var option = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h4',
+                        { style: { margin: '0 auto' } },
+                        button
+                    );
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         __WEBPACK_IMPORTED_MODULE_1_react_bootstrap__["h" /* Row */],
                         { key: idx },
