@@ -1,14 +1,14 @@
 # VK polls
 
-### Done
+#### Done
 - [x] Auth via VK with salted passwords
 - [x] Single feed which lazily loads polls on scrolling
 - [x] Multi-answer and single-answer polls
 - [x] Anonymous and public polls
-- [x] Caching of all info needed to show polls (user info, votes, options), caching of last 10 polls
+- [x] Caching of all info needed to show polls (user info, votes, options), caching of order of last 10 polls in the feed
 - [x]
 
-### TODO
+#### TODO
 - [ ] Unit tests for backend
 - [ ] Jest tests for react components
 - [ ] Cache order of not only last 10 polls in the feed, but arbitrary number of polls
@@ -18,4 +18,17 @@
 - [ ] In frontend add 'isLoading' and 'isError' vars to state of Presentational components to correctly show loading states
 - [ ] In frontend add error handlers to show when errors occur and don't silence them
 - [ ] Create index on create_at column in polls table (used for ordering when constructing poll feed)
-- [ ]
+- [ ] Turn off laravel's default redundant middlewares
+- [ ] Refactor frontend env-dependant constant to fetch them from env (e.g. url fo the site to localhost when testing and to DO instance's ip in prod)
+
+## Structure
+
+Laravel is mostly used for routing, migrations and hooking up of mysql and memcached via facades.
+
+- DB schema is in **database/migrations/**.
+- Model classes with helper caching methods are in **app/**
+- Controller classes are in **app/Http/Controllers**
+- Routes are in **routes/**
+- All frontend code is in **resources/js/** with base html template in **resources/views/welcome.blade.php**
+
+For it to work you have to add .env file with DB and CACHE connection info, generated JWT secret and VK API info. This .env file is used in docker-compose.
