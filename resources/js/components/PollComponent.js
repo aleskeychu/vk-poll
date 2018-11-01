@@ -34,8 +34,8 @@ export default class PollComponent extends Component {
                     />
                     <div style={cardEditDelete}>
                         {(userHasVoted
-                        ? <Button style={subbuttonStyle} onClick={this.props.onUnvote}>Unvote</Button>
-                        : null
+                                ? <Button style={subbuttonStyle} onClick={this.props.onUnvote}>Unvote</Button>
+                                : null
                         )}
                         {creatorIsCurrentUser
                             ? (
@@ -58,21 +58,21 @@ export default class PollComponent extends Component {
             </h4></Row>);
 
         let options;
-
         if (userHasVoted) {
             options = this.props.poll.options.map((elem, idx) => {
                 let option = (
-                    <Row onClick={this.props.showVotesWindow(elem.index)}>
-                        <h4 style={{margin: '0 auto'}}>
+                    <h4 style={{margin: '0 auto'}}>
+                        <Button
+                            onClick={this.props.showVotesWindow(elem.index)}>
                             {elem.text + ' (' + elem.vote_count + ')'}
-                        </h4>
-                    </Row>);
+                        </Button>
+                    </h4>);
                 if (this.props.poll.userVotedFor.find(index => index === elem.index) !== undefined) {
                     option = (<div style={optionVotedStyle} key={idx}>{option}</div>);
                 } else {
                     option = (<div style={optionNotVotedStyle} key={idx}>{option}</div>);
                 }
-                return option;
+                return (<Row key={idx}>{option}</Row>);
             });
         } else {
             options = this.props.poll.options.map((elem, idx) => {
@@ -96,7 +96,7 @@ export default class PollComponent extends Component {
         const multiSubmitButton = (!this.props.poll.is_multianswer || this.props.optionsToVoteFor.length === 0)
             ? null
             : (<div>
-                    <Button style={subbuttonStyle } onClick={this.props.onMultiSubmit}>Save</Button>
+                    <Button style={subbuttonStyle} onClick={this.props.onMultiSubmit}>Save</Button>
                 </div>
             );
         return (
