@@ -34,6 +34,8 @@ class User extends Authenticatable
     public static function fetchWithCache($cache_ids) {
         $cache_ids_as_keys = array_fill_keys($cache_ids, null); // filter duplicate keys
         $users = Cache::many($cache_ids_as_keys);
+        error_log('users from cache');
+        error_log(print_r($users, true));
         $users_not_in_cache = array_filter(array_values(array_map(function ($user, $key) {
             if ($user === null) {
                 return User::cacheKeyToId($key);
@@ -41,10 +43,12 @@ class User extends Authenticatable
             return null;
         }, $users, array_keys($users))));
         $users_not_in_cache_ids_as_keys = array_fill_keys($users_not_in_cache, null);
+        error_log('user ids not in cache');
+        error_log(print_r($users_not_in_cache_ids_as_keys, true));
         $users_not_in_cache_with_cache_keys = [];
         foreach ($users_not_in_cache_ids_as_keys as $key => $value) {
             $iter_user = User::find($key)->first();
-            $users_not_in_cache_with_cache_keys['user_' . $key] = array(
+            $users_not_in_cache_with_cache_keys[User::getCacheKey($key)] = array(
                 'id' => $iter_user->id,
                 'first_name' => $iter_user->first_name,
                 'second_name' => $iter_user->second_name,
@@ -52,6 +56,8 @@ class User extends Authenticatable
                 'image_50' => $iter_user->image_50
             );
         }
+        error_log('users from db');
+        error_log(print_r($users_not_in_cache_with_cache_keys, true));
         Cache::put($users_not_in_cache_with_cache_keys, self::CACHE_TTL);
         return array_merge($users, $users_not_in_cache_with_cache_keys);
     }
