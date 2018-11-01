@@ -9,6 +9,7 @@
 
 #### TODO
 - [ ] Unit tests for backend
+- [ ] Logging for backend
 - [ ] Jest tests for react components
 - [ ] Cache order of not only last 10 polls in the feed, but arbitrary number of polls
 - [ ] Analytics tab (fetch more user info from react api, add controller + react component to show this info,
@@ -18,7 +19,7 @@
 - [ ] Refactor frontend env-dependant constant to fetch them from env (e.g. url fo the site to localhost when testing and to DO instance's ip in prod)
 - [ ] Properly handle all emojies when passed as text in polls
 - [ ] Get domain and install TLS on DO instance to support https
-- [ ] etc...
+- [ ] and so much more...
 ## Structure
 
 Laravel is mostly used for routing, migrations and hooking up of mysql and memcached via facades.
@@ -31,6 +32,6 @@ Laravel is mostly used for routing, migrations and hooking up of mysql and memca
 
 For it to work you have to add .env file with DB and CACHE connection info, generated JWT secret and VK API info. This .env file is used in docker-compose.
 
-Authentication works via passing JWT token from VkOAuthController welcome.blade.php and immediately saving
+Authentication works via passing JWT token from VkOAuthController via welcome.blade.php and immediately saving
 it to local storage, and then passing it with every api request in 'Authorization' header. 
-In back JWT provider checks it and provides user model object via User facade (thanks, laravel).
+On the backend side JWT provider checks it and provides user model object via User facade (thanks, laravel).
