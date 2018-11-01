@@ -92278,7 +92278,7 @@ var SidebarComponent = function (_Component) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SidebarComponent.__proto__ || Object.getPrototypeOf(SidebarComponent)).call.apply(_ref, [this].concat(args))), _this), _this.logout = function () {
             window.localStorage.setItem('jwtToken', '');
-            window.location.href = 'http://localhost:8000/login';
+            window.location.href = '/login';
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 

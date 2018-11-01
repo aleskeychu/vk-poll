@@ -7,7 +7,7 @@ import {Button} from 'react-bootstrap';
 class SidebarComponent extends Component {
     logout = () => {
         window.localStorage.setItem('jwtToken', '');
-        window.location.href = 'http://localhost:8000/login';
+        window.location.href = '/login';
     };
 
     render() {
