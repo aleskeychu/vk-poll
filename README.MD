@@ -1,7 +1,7 @@
 # VK polls
 
 #### Done
-- [x] Auth via VK with salted passwords
+- [x] Auth via VK with JWT for authenticating requests from frontend
 - [x] Single feed which lazily loads polls on scrolling
 - [x] Multi-answer and single-answer polls
 - [x] Anonymous and public polls
