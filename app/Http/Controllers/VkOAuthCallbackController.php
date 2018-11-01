@@ -34,7 +34,6 @@ class VkOAuthCallbackController extends \Illuminate\Routing\Controller
             }
             $response = $client->request('GET', $this->getUrlForUserInfo($access_token));
             if ($response->getStatusCode() === 200) {
-                error_log($response->getBody());
                 $result = json_decode($response->getBody())->response[0];
                 $user->id = $result->id;
                 $user->first_name = $result->first_name;

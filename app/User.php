@@ -52,8 +52,6 @@ class User extends Authenticatable
                 'image_50' => $iter_user->image_50
             );
         }
-        error_log('users from db');
-        error_log(print_r($users_not_in_cache_with_cache_keys, true));
         Cache::put($users_not_in_cache_with_cache_keys, self::CACHE_TTL);
         return array_merge($users, $users_not_in_cache_with_cache_keys);
     }

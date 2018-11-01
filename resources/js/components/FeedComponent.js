@@ -41,10 +41,11 @@ export default class FeedComponent extends Component {
         }
         else {
             return (
-                <Waypoint
-                    style={{height: '10px'}}
-                    onEnter={this._loadMoreItems}
-                />
+                <div style={{height: '10px', width: '100%'}}>
+                    <Waypoint
+                        onEnter={this._loadMoreItems}
+                    />
+                </div>
             );
         }
     }

@@ -31,7 +31,6 @@ class PollController extends Controller
             'isMultianswer' => 'required|boolean',
             'isAnonymous' => 'required|boolean',
         ]);
-        error_log(print_r($data, true));
         $userId = Auth::user()->id;
         $poll = new Poll([
             'title' => $data['title'],

@@ -16,8 +16,8 @@
 - [ ] In frontend add 'isLoading' and 'isError' vars to state of Presentational components to correctly show loading states and improve UX
 - [ ] In frontend add error handlers to show when errors occur and don't silence them
 - [ ] Refactor frontend env-dependant constant to fetch them from env (e.g. url fo the site to localhost when testing and to DO instance's ip in prod)
-- [ ] Properly handle all emojies when passed as text in polls to support https
-- [ ] Get domain and install TLS on DO instance
+- [ ] Properly handle all emojies when passed as text in polls
+- [ ] Get domain and install TLS on DO instance to support https
 - [ ] etc...
 ## Structure
 
@@ -30,3 +30,7 @@ Laravel is mostly used for routing, migrations and hooking up of mysql and memca
 - All frontend code is in **resources/js/** with base html template in **resources/views/welcome.blade.php**
 
 For it to work you have to add .env file with DB and CACHE connection info, generated JWT secret and VK API info. This .env file is used in docker-compose.
+
+Authentication works via passing JWT token from VkOAuthController welcome.blade.php and immediately saving
+it to local storage, and then passing it with every api request in 'Authorization' header. 
+In back JWT provider checks it and provides user model object via User facade (thanks, laravel).
