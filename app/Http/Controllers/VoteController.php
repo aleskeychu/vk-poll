@@ -20,7 +20,7 @@ class VoteController extends Controller
         $data = $request->validate([
             'vote_id' => 'required|numeric'
         ]);
-        $isAnonymous = Poll::find($poll_id)->first()->is_anonymous;
+        $isAnonymous = Poll::find($poll_id)->is_anonymous;
         if ($isAnonymous) {
             return response()->json(['error' => 'cant get voters of anonymous polls', 403]);
         }
@@ -90,15 +90,15 @@ class VoteController extends Controller
             ['poll_id', '=', $poll_id]
         ])->get()->toArray();
 
-        DB::transaction(function () use ($votes) {
-            array_map(function ($vote) {
+        DB::transaction(function () use ($votes, $user_id) {
+            array_map(function ($vote) use ($user_id) {
                 DB::update(
                     'UPDATE options SET vote_count = vote_count - 1 WHERE poll_id = ? AND `index` = ?',
                     [$vote['poll_id'], $vote['vote_id']]
                 );
                 DB::delete(
-                    'DELETE FROM votes WHERE poll_id = ? AND vote_id = ?',
-                    [$vote['poll_id'], $vote['vote_id']]
+                    'DELETE FROM votes WHERE poll_id = ? AND vote_id = ? AND user_id = ?',
+                    [$vote['poll_id'], $vote['vote_id'], $user_id]
                 );
             }, $votes);
         });
