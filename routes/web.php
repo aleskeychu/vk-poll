@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('vkcallback', 'VKOAuthCallbackController@index');
+Route::get('vkcallback', 'VkOAuthCallbackController@index');
 
 Route::get( '/{path?}', function(){
     return view('welcome');
