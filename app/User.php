@@ -47,13 +47,15 @@ class User extends Authenticatable
         error_log(print_r($users_not_in_cache_ids_as_keys, true));
         $users_not_in_cache_with_cache_keys = [];
         foreach ($users_not_in_cache_ids_as_keys as $key => $value) {
-            $iter_user = User::find($key)->first();
+            $iter_user = User::find($key);
+            error_log('user find key: '.$key);
+            error_log(print_r($iter_user, true));
             $users_not_in_cache_with_cache_keys[User::getCacheKey($key)] = array(
-                'id' => $iter_user->id,
-                'first_name' => $iter_user->first_name,
-                'second_name' => $iter_user->second_name,
-                'domain' => $iter_user->domain,
-                'image_50' => $iter_user->image_50
+                'id' => $iter_user[0]->id,
+                'first_name' => $iter_user[0]->first_name,
+                'second_name' => $iter_user[0]->second_name,
+                'domain' => $iter_user[0]->domain,
+                'image_50' => $iter_user[0]->image_50
             );
         }
         error_log('users from db');
