@@ -71065,7 +71065,10 @@ var TestComponent = function (_Component) {
                         __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["d" /* Switch */],
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["c" /* Route */], { exact: true, path: '/login', component: __WEBPACK_IMPORTED_MODULE_2__LoginComponent__["a" /* default */] }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__PrivateRoute__["a" /* default */], { exact: true, path: '/feed', component: __WEBPACK_IMPORTED_MODULE_4__MainComponent__["a" /* default */] })
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__PrivateRoute__["a" /* default */], { exact: true, path: '/feed', component: __WEBPACK_IMPORTED_MODULE_4__MainComponent__["a" /* default */] }),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["c" /* Route */], { render: function render() {
+                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Redirect, { to: "/login" });
+                            } })
                     )
                 )
             );
