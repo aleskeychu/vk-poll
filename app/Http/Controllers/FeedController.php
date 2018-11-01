@@ -12,7 +12,7 @@ use App\User;
 
 class FeedController extends Controller
 {
-    const DEFAULT_POLL_BATCH_SIZE = 4;
+    const DEFAULT_POLL_BATCH_SIZE = 10;
     const CACHE_TTL = 60 * 4;
 
     public function index(Request $request)
