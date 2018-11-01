@@ -12,6 +12,7 @@ export default class TestComponent extends Component {
                     <Switch>
                         <Route exact path='/login' component={LoginComponent}/>
                         <PrivateRoute exact path='/feed' component={MainComponent}/>
+                        <Route render={() => <Redirect to={"/login"} />} />
                     </Switch>
                 </BrowserRouter>
             </div>
