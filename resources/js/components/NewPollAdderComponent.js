@@ -92,7 +92,6 @@ export default class NewPollAdderComponent extends Component {
 
     getValidationState = () => {
         const res = this.state.emptyOptions || this.state.emptyTitle;
-        console.log(res);
         return res;
     };
 
