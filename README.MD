@@ -6,7 +6,6 @@
 - [x] Multi-answer and single-answer polls
 - [x] Anonymous and public polls
 - [x] Caching of all info needed to show polls (user info, votes, options), caching of order of last 10 polls in the feed
-- [x]
 
 #### TODO
 - [ ] Unit tests for backend
@@ -20,7 +19,7 @@
 - [ ] Create index on create_at column in polls table (used for ordering when constructing poll feed)
 - [ ] Turn off laravel's default redundant middlewares
 - [ ] Refactor frontend env-dependant constant to fetch them from env (e.g. url fo the site to localhost when testing and to DO instance's ip in prod)
-
+- [ ] Fix weird bug with JWT lib that when a new user log in for the first time, he has to press the 'login' button two times
 ## Structure
 
 Laravel is mostly used for routing, migrations and hooking up of mysql and memcached via facades.
