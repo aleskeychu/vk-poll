@@ -13,13 +13,9 @@
 - [ ] Cache order of not only last 10 polls in the feed, but arbitrary number of polls
 - [ ] Analytics tab (fetch more user info from react api, add controller + react component to show this info,
     cache it in controller, draw pretty charts with chart js)
-- [ ] Adaptive css for smaller screens
-- [ ] In frontend add 'isLoading' and 'isError' vars to state of Presentational components to correctly show loading states
+- [ ] In frontend add 'isLoading' and 'isError' vars to state of Presentational components to correctly show loading states and improve UX
 - [ ] In frontend add error handlers to show when errors occur and don't silence them
-- [ ] Create index on create_at column in polls table (used for ordering when constructing poll feed)
-- [ ] Turn off laravel's default redundant middlewares
 - [ ] Refactor frontend env-dependant constant to fetch them from env (e.g. url fo the site to localhost when testing and to DO instance's ip in prod)
-- [ ] Fix weird bug with JWT lib that when a new user log in for the first time, he has to press the 'login' button two times
 ## Structure
 
 Laravel is mostly used for routing, migrations and hooking up of mysql and memcached via facades.

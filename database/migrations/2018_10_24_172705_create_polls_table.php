@@ -21,6 +21,7 @@ class CreatePollsTable extends Migration
             $table->string('title');
             $table->timestamps();
 
+            $table->index(['created_at']);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
